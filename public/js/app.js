@@ -1966,6 +1966,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -37920,6 +37931,10 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-lg-12 col-md-12 col-sm-12" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
     _c(
       "div",
       {
@@ -37935,13 +37950,13 @@ var render = function() {
           "div",
           { staticClass: "card-body", staticStyle: { "margin-top": "180px" } },
           [
-            _vm._m(0),
-            _vm._v(" "),
             _vm._m(1),
+            _vm._v(" "),
+            _vm._m(2),
             _vm._v(" "),
             _c("div", { staticClass: "table-responsive-sm" }, [
               _c("table", { staticClass: "table" }, [
-                _vm._m(2),
+                _vm._m(3),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -38060,14 +38075,15 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-danger btn-sm float-right",
+                              staticClass:
+                                "btn btn-danger btn-sm float-right rounded-circle",
                               on: {
                                 click: function($event) {
                                   return _vm.removeRow(invoiceItem)
                                 }
                               }
                             },
-                            [_vm._v("x")]
+                            [_vm._v("X")]
                           )
                         ])
                       ])
@@ -38079,7 +38095,7 @@ var render = function() {
                         staticClass: "btn btn-success",
                         on: { click: _vm.addRow }
                       },
-                      [_vm._v("Add Row")]
+                      [_vm._v(" + Add Row")]
                     )
                   ],
                   2
@@ -38094,7 +38110,7 @@ var render = function() {
                 _c("table", { staticClass: "table table-clear" }, [
                   _c("tbody", [
                     _c("tr", [
-                      _vm._m(3),
+                      _vm._m(4),
                       _vm._v(" "),
                       _c("td", { staticClass: "right" }, [
                         _vm._v(_vm._s(_vm.total))
@@ -38102,7 +38118,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
-                      _vm._m(4),
+                      _vm._m(5),
                       _vm._v(" "),
                       _c("td", { staticClass: "right" }, [
                         _vm._v(_vm._s(_vm.total * 0.077))
@@ -38110,7 +38126,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
-                      _vm._m(5),
+                      _vm._m(6),
                       _vm._v(" "),
                       _c("td", { staticClass: "right" }, [
                         _c("strong", { staticClass: "text-dark" }, [
@@ -38129,6 +38145,26 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12 text-right" }, [
+        _c("button", { staticClass: "btn btn-success rounded-pill" }, [
+          _vm._v("SAVE AND EXIT")
+        ]),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-success rounded-pill" }, [
+          _vm._v("SAVE AND CREATE NEW")
+        ]),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-primary rounded-pill" }, [
+          _vm._v("DOWNLOAD PDF")
+        ])
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

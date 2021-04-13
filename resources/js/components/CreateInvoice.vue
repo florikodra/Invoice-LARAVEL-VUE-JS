@@ -1,6 +1,15 @@
 <template>
  <div class="col-lg-12 col-md-12 col-sm-12">
 
+     <div class="row">
+        <div class="col-lg-12 text-right">
+            <button class="btn btn-success rounded-pill">SAVE AND EXIT</button>
+            <button class="btn btn-success rounded-pill">SAVE AND CREATE NEW</button>
+            <button class="btn btn-primary rounded-pill">DOWNLOAD PDF</button>
+        </div>
+     </div>
+     <br>
+
      <div class="card" style="background-image:url('Senery_letterhead-2-empty.jpg'); background-size: cover; height:1527px">
          <div class="card-body" style="margin-top: 180px">
              <div class="row mb-4">
@@ -46,10 +55,10 @@
                              <td class="center"><input type="number" name="quantity" class="form-control" v-model="invoiceItem.quantity"></td>
                              <td class="center">$</td>
                              <td class="right">{{ invoiceItem.quantity*invoiceItem.price }}
-                             <button class="btn btn-danger btn-sm float-right" @click="removeRow(invoiceItem)">x</button></td>
+                             <button class="btn btn-danger btn-sm float-right rounded-circle" @click="removeRow(invoiceItem)">X</button></td>
                          </tr>
 
-                         <button class="btn btn-success" @click="addRow">Add Row</button>
+                         <button class="btn btn-success" @click="addRow"> + Add Row</button>
                        
                      </tbody>
                  </table>
@@ -85,7 +94,9 @@
                  </div>
              </div>
          </div>
+         
      </div>
+     
  </div>
 </template>
 
