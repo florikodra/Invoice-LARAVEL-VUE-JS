@@ -1860,6 +1860,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -1875,6 +1876,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
 //
 //
 //
@@ -37914,7 +37917,10 @@ var render = function() {
               [
                 _c(
                   "router-link",
-                  { staticClass: "nav-item nav-link", attrs: { to: "/" } },
+                  {
+                    staticClass: "nav-item nav-link btn btn-primary",
+                    attrs: { to: "/" }
+                  },
                   [_vm._v("Invoices List")]
                 ),
                 _vm._v(" "),
@@ -37970,16 +37976,12 @@ var render = function() {
             staticClass: "btn btn-success rounded-pill button-c mt-1",
             on: { click: _vm.addInvoice }
           },
-          [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SAVE AND EXIT")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-success rounded-pill button-c mt-1" },
-          [_vm._v("SAVE AND CREATE NEW")]
+          [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SAVE")]
         ),
         _vm._v(" "),
         _vm._m(0),
+        _vm._v(" "),
+        _vm._m(1),
         _vm._v(" "),
         _c("hr"),
         _vm._v(" "),
@@ -38045,7 +38047,7 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "card card-c" }, [
       _c("div", { staticClass: "card-body card-body-c" }, [
-        _vm._m(1),
+        _vm._m(2),
         _vm._v(" "),
         _c("h1", { staticClass: "text-center text-primary m-3" }, [
           _vm._v("FATTURA")
@@ -38055,7 +38057,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "table-responsive-sm" }, [
           _c("table", { staticClass: "table" }, [
-            _vm._m(2),
+            _vm._m(3),
             _vm._v(" "),
             _c(
               "tbody",
@@ -38208,7 +38210,7 @@ var render = function() {
             _c("table", { staticClass: "table table-clear" }, [
               _c("tbody", [
                 _c("tr", [
-                  _vm._m(3),
+                  _vm._m(4),
                   _vm._v(" "),
                   _c("td", { staticClass: "right" }, [
                     _vm._v(_vm._s(_vm.currency) + " " + _vm._s(_vm.subtotal))
@@ -38228,7 +38230,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("tr", [
-                  _vm._m(4),
+                  _vm._m(5),
                   _vm._v(" "),
                   _c("td", { staticClass: "right" }, [
                     _c("strong", { staticClass: "text-dark" }, [
@@ -38254,7 +38256,17 @@ var staticRenderFns = [
     return _c(
       "button",
       { staticClass: "btn btn-primary rounded-pill button-c mt-1" },
-      [_c("i", { staticClass: "fas fa-download" }), _vm._v(" DOWNLOAD PDF")]
+      [_c("i", { staticClass: "fas fa-undo" }), _vm._v(" RESET")]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-danger rounded-pill button-c mt-1" },
+      [_vm._v("DOWNLOAD   "), _c("i", { staticClass: "fas fa-file-pdf" })]
     )
   },
   function() {
@@ -38262,7 +38274,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row mb-4" }, [
-      _c("div", { staticClass: "col-sm-4" }, [
+      _c("div", { staticClass: "col-sm-4 form-group" }, [
+        _c("input", { staticClass: "form-control", attrs: { type: "text" } }),
+        _vm._v(" "),
         _c("textarea", {
           staticClass: "form-control textarea-c",
           attrs: { name: "", rows: "3" }

@@ -3,9 +3,9 @@
 
      <div class="row">
         <div class="col-lg-2 text-left button-head-c">
-            <button class="btn btn-success rounded-pill button-c mt-1" @click="addInvoice"><i class="fas fa-save"></i> SAVE AND EXIT</button>
-            <button class="btn btn-success rounded-pill button-c mt-1">SAVE AND CREATE NEW</button>
-            <button class="btn btn-primary rounded-pill button-c mt-1"><i class="fas fa-download"></i> DOWNLOAD PDF</button>
+            <button class="btn btn-success rounded-pill button-c mt-1" @click="addInvoice"><i class="fas fa-save"></i> SAVE</button>
+            <button class="btn btn-primary rounded-pill button-c mt-1"><i class="fas fa-undo"></i> RESET</button>
+            <button class="btn btn-danger rounded-pill button-c mt-1">DOWNLOAD &nbsp;&nbsp;<i class="fas fa-file-pdf"></i></button>
             <hr>
             <div class="row">
                 <div class="col-lg-6">
@@ -27,7 +27,8 @@
      <div class="card card-c">
          <div class="card-body card-body-c">
              <div class="row mb-4">
-                 <div class="col-sm-4">
+                 <div class="col-sm-4 form-group">
+                     <input type="text" class="form-control">
                      <textarea name="" class="form-control textarea-c" rows="3"></textarea>
                      <!-- <div>29, Singla Street</div>
                      <div>Sikeston,New Delhi 110034</div>
@@ -46,6 +47,7 @@
                  </div>
              </div>
              <h1 class="text-center text-primary m-3">FATTURA</h1>
+             
              <div class="row">
              
              </div>
