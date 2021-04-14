@@ -1977,10 +1977,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       invoice: {},
+      subtotal: 0,
+      tax: 0,
+      total: 0,
+      iva: 7.7,
+      currency: "$",
       invoiceItems: [{
         title: "",
         description: "",
@@ -1990,25 +2012,34 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    total: function total() {
-      return this.invoiceItems.reduce(function (acc, invoiceItem) {
+    totalInvoice: function totalInvoice() {
+      this.subtotal = this.invoiceItems.reduce(function (acc, invoiceItem) {
         return acc + invoiceItem.price * invoiceItem.quantity;
       }, 0);
+      this.tax = this.subtotal * (this.iva / 100);
+      this.total = this.tax + this.subtotal;
+      return this.total;
     }
   },
   methods: {
+    addVat: function addVat(evt) {
+      this.iva = evt.target.value;
+    },
+    addCurrency: function addCurrency(evt) {
+      this.currency = evt.target.value;
+    },
     addInvoice: function addInvoice() {
-      var _this = this;
-
-      this.axios.post("http://localhost:8000/api/invoices", this.invoice).then(function (response) {
-        return _this.$router.push({
-          name: "/"
-        });
-      })["catch"](function (err) {
-        return console.log(err);
-      })["finally"](function () {
-        return _this.loading = false;
-      });
+      /*  this.axios
+           .post("http://localhost:8000/api/invoices", this.invoice)
+           .then(response => this.$router.push({ name: "/" }))
+           .catch(err => console.log(err))
+           .finally(() => (this.loading = false)); */
+      this.invoiceItems = [{
+        title: "",
+        description: "",
+        quantity: 1,
+        price: ""
+      }];
     },
     addRow: function addRow() {
       this.invoiceItems.push({
@@ -37931,217 +37962,288 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-lg-12 col-md-12 col-sm-12" }, [
-    _vm._m(0),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-2 text-left button-head-c" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success rounded-pill button-c mt-1",
+            on: { click: _vm.addInvoice }
+          },
+          [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SAVE AND EXIT")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-success rounded-pill button-c mt-1" },
+          [_vm._v("SAVE AND CREATE NEW")]
+        ),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("hr"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("label", [_vm._v("Currency: ")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: this.currency,
+                  expression: "this.currency"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: this.currency },
+              on: {
+                keyup: _vm.addCurrency,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(this, "currency", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("label", [_vm._v("IVA: ")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: this.iva,
+                  expression: "this.iva"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: this.iva },
+              on: {
+                keyup: _vm.addVat,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(this, "iva", $event.target.value)
+                }
+              }
+            })
+          ])
+        ])
+      ])
+    ]),
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "card",
-        staticStyle: {
-          "background-image": "url('Senery_letterhead-2-empty.jpg')",
-          "background-size": "cover",
-          height: "1527px"
-        }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "card-body", staticStyle: { "margin-top": "180px" } },
-          [
-            _vm._m(1),
-            _vm._v(" "),
+    _c("div", { staticClass: "card card-c" }, [
+      _c("div", { staticClass: "card-body card-body-c" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c("h1", { staticClass: "text-center text-primary m-3" }, [
+          _vm._v("FATTURA")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "table-responsive-sm" }, [
+          _c("table", { staticClass: "table" }, [
             _vm._m(2),
             _vm._v(" "),
-            _c("div", { staticClass: "table-responsive-sm" }, [
-              _c("table", { staticClass: "table" }, [
-                _vm._m(3),
+            _c(
+              "tbody",
+              [
+                _vm._l(_vm.invoiceItems, function(invoiceItem) {
+                  return _c("tr", { key: invoiceItem }, [
+                    _c("td", { staticClass: "left" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: invoiceItem.title,
+                            expression: "invoiceItem.title"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        staticStyle: { "margin-bottom": "3px" },
+                        attrs: {
+                          type: "text",
+                          name: "title",
+                          placeholder: "Nome"
+                        },
+                        domProps: { value: invoiceItem.title },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(invoiceItem, "title", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        staticClass: "form-control",
+                        attrs: {
+                          name: "",
+                          id: "",
+                          rows: "2",
+                          placeholder: "Descrizione"
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "center" }, [
+                      _vm._v(_vm._s(_vm.currency))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "right" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: invoiceItem.price,
+                            expression: "invoiceItem.price"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "number",
+                          name: "price",
+                          min: "0.00",
+                          value: "0.00",
+                          step: "0.1",
+                          placeholder: "100.00"
+                        },
+                        domProps: { value: invoiceItem.price },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(invoiceItem, "price", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "center" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: invoiceItem.quantity,
+                            expression: "invoiceItem.quantity"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", name: "quantity" },
+                        domProps: { value: invoiceItem.quantity },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              invoiceItem,
+                              "quantity",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "center" }, [
+                      _vm._v(_vm._s(_vm.currency))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "right" }, [
+                      _vm._v(
+                        _vm._s(invoiceItem.quantity * invoiceItem.price) +
+                          "\n                            "
+                      ),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-danger btn-sm float-right rounded-circle",
+                          on: {
+                            click: function($event) {
+                              return _vm.removeRow(invoiceItem)
+                            }
+                          }
+                        },
+                        [_vm._v("X")]
+                      )
+                    ])
+                  ])
+                }),
                 _vm._v(" "),
                 _c(
-                  "tbody",
-                  [
-                    _vm._l(_vm.invoiceItems, function(invoiceItem) {
-                      return _c("tr", { key: invoiceItem }, [
-                        _c("td", { staticClass: "left" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: invoiceItem.title,
-                                expression: "invoiceItem.title"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            staticStyle: { "margin-bottom": "3px" },
-                            attrs: {
-                              type: "text",
-                              name: "title",
-                              placeholder: "Item title"
-                            },
-                            domProps: { value: invoiceItem.title },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  invoiceItem,
-                                  "title",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("textarea", {
-                            staticClass: "form-control",
-                            attrs: { name: "", id: "", rows: "2" }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "center" }, [_vm._v("$")]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "right" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: invoiceItem.price,
-                                expression: "invoiceItem.price"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "number",
-                              name: "price",
-                              min: "0.00",
-                              value: "0.00",
-                              step: "0.1"
-                            },
-                            domProps: { value: invoiceItem.price },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  invoiceItem,
-                                  "price",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "center" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: invoiceItem.quantity,
-                                expression: "invoiceItem.quantity"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "number", name: "quantity" },
-                            domProps: { value: invoiceItem.quantity },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  invoiceItem,
-                                  "quantity",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "center" }, [_vm._v("$")]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "right" }, [
-                          _vm._v(
-                            _vm._s(invoiceItem.quantity * invoiceItem.price) +
-                              "\n                            "
-                          ),
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-danger btn-sm float-right rounded-circle",
-                              on: {
-                                click: function($event) {
-                                  return _vm.removeRow(invoiceItem)
-                                }
-                              }
-                            },
-                            [_vm._v("X")]
-                          )
-                        ])
-                      ])
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success",
-                        on: { click: _vm.addRow }
-                      },
-                      [_vm._v(" + Add Row")]
-                    )
-                  ],
-                  2
+                  "button",
+                  { staticClass: "btn btn-success", on: { click: _vm.addRow } },
+                  [_vm._v(" + Add Row")]
                 )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-lg-4 col-sm-5" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-lg-4 col-sm-5 ml-auto" }, [
-                _c("table", { staticClass: "table table-clear" }, [
-                  _c("tbody", [
-                    _c("tr", [
-                      _vm._m(4),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "right" }, [
-                        _vm._v(_vm._s(_vm.total))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _vm._m(5),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "right" }, [
-                        _vm._v(_vm._s(_vm.total * 0.077))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _vm._m(6),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "right" }, [
-                        _c("strong", { staticClass: "text-dark" }, [
-                          _vm._v(_vm._s(_vm.total + 0.077 * _vm.total))
-                        ])
-                      ])
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-4 col-sm-5" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-4 col-sm-5 ml-auto" }, [
+            _c("table", { staticClass: "table table-clear" }, [
+              _c("tbody", [
+                _c("tr", [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "right" }, [
+                    _vm._v(_vm._s(_vm.currency) + " " + _vm._s(_vm.subtotal))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "left" }, [
+                    _c("strong", { staticClass: "text-dark" }, [
+                      _vm._v("IVA " + _vm._s(this.iva) + "%")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "right" }, [
+                    _vm._v(_vm._s(_vm.currency) + " " + _vm._s(_vm.tax))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "right" }, [
+                    _c("strong", { staticClass: "text-dark" }, [
+                      _vm._v(
+                        _vm._s(_vm.currency) + " " + _vm._s(_vm.totalInvoice)
+                      )
                     ])
                   ])
                 ])
               ])
             ])
-          ]
-        )
-      ]
-    )
+          ])
+        ])
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -38149,21 +38251,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-12 text-right" }, [
-        _c("button", { staticClass: "btn btn-success rounded-pill" }, [
-          _vm._v("SAVE AND EXIT")
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-success rounded-pill" }, [
-          _vm._v("SAVE AND CREATE NEW")
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-primary rounded-pill" }, [
-          _vm._v("DOWNLOAD PDF")
-        ])
-      ])
-    ])
+    return _c(
+      "button",
+      { staticClass: "btn btn-primary rounded-pill button-c mt-1" },
+      [_c("i", { staticClass: "fas fa-download" }), _vm._v(" DOWNLOAD PDF")]
+    )
   },
   function() {
     var _vm = this
@@ -38172,8 +38264,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row mb-4" }, [
       _c("div", { staticClass: "col-sm-4" }, [
         _c("textarea", {
-          staticClass: "form-control",
-          staticStyle: { opacity: ".7" },
+          staticClass: "form-control textarea-c",
           attrs: { name: "", rows: "3" }
         })
       ]),
@@ -38182,19 +38273,10 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "col-sm-4" }, [
         _c("textarea", {
-          staticClass: "form-control",
-          staticStyle: { opacity: ".7" },
+          staticClass: "form-control textarea-c",
           attrs: { name: "", rows: "3" }
         })
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("h3", { staticClass: "text-center" }, [_vm._v("Fattura")])
     ])
   },
   function() {
@@ -38231,14 +38313,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("td", { staticClass: "left" }, [
       _c("strong", { staticClass: "text-dark" }, [_vm._v("Subtotal")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "left" }, [
-      _c("strong", { staticClass: "text-dark" }, [_vm._v("IVA 7.7%")])
     ])
   },
   function() {
