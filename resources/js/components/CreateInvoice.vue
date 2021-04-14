@@ -5,7 +5,7 @@
         <div class="col-lg-2 text-left button-head-c">
             <button class="btn btn-success rounded-pill button-c mt-1" @click="addInvoice"><i class="fas fa-save"></i> SAVE</button>
             <button class="btn btn-primary rounded-pill button-c mt-1"><i class="fas fa-undo"></i> RESET</button>
-            <button class="btn btn-danger rounded-pill button-c mt-1">DOWNLOAD &nbsp;&nbsp;<i class="fas fa-file-pdf"></i></button>
+            <button class="btn btn-danger rounded-pill button-c mt-1" @click="downloadPDF">DOWNLOAD &nbsp;&nbsp;<i class="fas fa-file-pdf"></i></button>
             <hr>
             <div class="row">
                 <div class="col-lg-6">
@@ -24,7 +24,7 @@
      </div>
      <br>
 
-     <div class="card card-c">
+     <div class="card card-c" id="pdf">
          <div class="card-body card-body-c">
              <div class="row mb-4">
                  <div class="col-sm-4 form-group">
@@ -120,7 +120,10 @@
 </template>
 
 <script>
+import { jsPDF } from "jspdf";
+
 export default {
+    
     data() {
         return {
             invoice: {},
@@ -151,6 +154,15 @@ export default {
 
     },
     methods: {
+        downloadPDF(){
+            const doc = new jsPDF();
+            const html = this.$refs.pdf.innerHTML;
+            doc.fromHTML(html);
+            doc.save("output.pdf");
+            /* doc.fromHTML($('#pdf').get(0), 10, 10, {'width': 180}); */
+            /* doc.text("Hello world!", 10, 10); */
+            /* doc.save("a4.pdf"); */
+        },
         addVat(evt){
             this.iva=evt.target.value;
         },
@@ -158,11 +170,11 @@ export default {
             this.currency = evt.target.value;
         },
         addInvoice() {
-           /*  this.axios
+            this.axios
                 .post("http://localhost:8000/api/invoices", this.invoice)
                 .then(response => this.$router.push({ name: "/" }))
                 .catch(err => console.log(err))
-                .finally(() => (this.loading = false)); */
+                .finally(() => (this.loading = false));
 
             this.invoiceItems= [
                 {
