@@ -3,7 +3,7 @@
 
      <div class="row">
         <div class="col-lg-2 text-left button-head-c">
-            <button class="btn btn-success rounded-pill button-c mt-1" @click="addInvoice"><i class="fas fa-save"></i> SAVE</button>
+            <button class="btn btn-success rounded-pill button-c mt-1" @click="addInvoice"><i class="fas fa-save"></i> SAVE & DOWNLOAD PDF</button>
             <button class="btn btn-primary rounded-pill button-c mt-1"><i class="fas fa-undo"></i> RESET</button>
             <button class="btn btn-danger rounded-pill button-c mt-1" @click="downloadPDF">DOWNLOAD &nbsp;&nbsp;<i class="fas fa-file-pdf"></i></button>
             <hr>
@@ -24,7 +24,7 @@
      </div>
      <br>
 
-     <div class="card card-c" id="pdf">
+     <div class="card card-c" ref="document" id="pdf">
          <div class="card-body card-body-c">
              <div class="row mb-4">
                  <div class="col-sm-4 form-group">
@@ -38,6 +38,7 @@
                  <div class="col-sm-4">
                  </div>
                  <div class="col-sm-4">
+                     <input type="text" class="form-control">
                      <textarea name="" class="form-control textarea-c" rows="3"></textarea>
                      <!-- <h3 class="text-dark mb-1">Akshay Singh</h3>
                      <div>478, Nai Sadak</div>
@@ -72,10 +73,10 @@
                              <td class="center"><input type="number" name="quantity" class="form-control" v-model="invoiceItem.quantity"></td>
                              <td class="center">{{currency}}</td>
                              <td class="right">{{ invoiceItem.quantity*invoiceItem.price }}
-                             <button class="btn btn-danger btn-sm float-right rounded-circle" @click="removeRow(invoiceItem)">X</button></td>
+                             <button class="btn btn-danger btn-sm float-right rounded-circle" @click="removeRow(invoiceItem)" data-html2canvas-ignore="true">X</button></td>
                          </tr>
 
-                         <button class="btn btn-success" @click="addRow"> + Add Row</button>
+                         <button class="btn btn-success" @click="addRow" data-html2canvas-ignore="true"> + Add Row</button>
                        
                      </tbody>
                  </table>
@@ -120,7 +121,9 @@
 </template>
 
 <script>
+import html2pdf from 'html2pdf.js'
 import { jsPDF } from "jspdf";
+
 
 export default {
     
@@ -154,14 +157,38 @@ export default {
 
     },
     methods: {
+
         downloadPDF(){
-            const doc = new jsPDF();
+            html2pdf(this.$refs.document, {
+                    margin: 0,
+					filename: 'document.pdf',
+					image: { type: 'pdf'},
+                    /* html2canvas: {windowWidth: 1662}, */
+                    html2canvas: {width: 800},
+					jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+				})
+            /* const doc = new jsPDF();
             const html = this.$refs.pdf.innerHTML;
-            doc.fromHTML(html);
-            doc.save("output.pdf");
+            doc.html(this.$refs.pdf.innerHTML);
+            doc.save("output.pdf"); */
             /* doc.fromHTML($('#pdf').get(0), 10, 10, {'width': 180}); */
             /* doc.text("Hello world!", 10, 10); */
             /* doc.save("a4.pdf"); */
+           
+            /* axios.post('/api/invoice/pdf', {
+               invoiceItems : this.invoiceItems,
+               currency: this.currency,
+               tax: this.tax,
+               subtotal: this.subtotal,
+               total: this.subtotal,
+
+            })
+            .then(function (response) {
+                window.open(response.data, "_blank");
+                //console.log(response.data);
+            }) */
+            
+                
         },
         addVat(evt){
             this.iva=evt.target.value;

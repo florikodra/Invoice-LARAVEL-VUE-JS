@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use PDF;
+
 
 class InvoiceController extends Controller
 {
@@ -27,6 +29,29 @@ class InvoiceController extends Controller
     {
         //
     }
+    
+    /**
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function pdf(Request $request)
+    {
+        //var_dump($request->invoiceItems);
+       /*  $pdf = PDF::loadView('pdf');
+        $content = $pdf->download('pdf_file.pdf');
+        Storage::put('public/name.pdf', $content) ; */
+
+        $pdf = PDF::loadView('pdf');
+
+        Storage::put('public/pdf/invoice.pdf', $pdf->output());
+
+        return $pdf->download('invoice.pdf');
+
+
+
+        //return "https://google.com";
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,7 +61,8 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       echo "testtt";
+
     }
 
     /**
@@ -47,7 +73,9 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+         $pdf = PDF::loadView('pdf');
+        return $pdf->download('pdf_file.pdf');
+
     }
 
     /**
