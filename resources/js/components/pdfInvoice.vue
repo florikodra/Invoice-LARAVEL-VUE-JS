@@ -25,12 +25,14 @@ N. IVA: STREET1
                 <div class="col-lg-4 col-sm-12 col-md-4 backg-c text-white rounded-lg pt-2 pb-2 pl-4 pr-4">
                     <div class="row">
                         <div class="col">
-                            Data
-                            <h5>{{ this.data }}</h5>
+                            <label>Data</label>
+                            <!-- <h5>{{ this.data }}</h5> -->
+                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="this.data">
                         </div>
                         <div class="col">
-                            Numero fattura
-                            <h5>{{ this.numeroFattura }}</h5>
+                            <label>Numero fattura</label>
+                            <!-- <h5>{{ this.numeroFattura }}</h5> -->
+                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="this.numeroFattura">
                         </div>
                     </div>
                 </div>

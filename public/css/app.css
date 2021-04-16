@@ -10055,3 +10055,11 @@ h3 {
   color: #1aafff;
   font-size: 20px;
 }
+
+.input-c {
+  width: 100%;
+  background-color: #1aafff;
+  /* border: 1px solid #fff; */
+  color: white;
+  border: none;
+}

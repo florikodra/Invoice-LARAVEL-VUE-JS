@@ -2287,6 +2287,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -50614,17 +50616,55 @@ var render = function() {
           [
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col" }, [
-                _vm._v(
-                  "\n                            Data\n                            "
-                ),
-                _c("h5", [_vm._v(_vm._s(this.data))])
+                _c("label", [_vm._v("Data")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: this.data,
+                      expression: "this.data"
+                    }
+                  ],
+                  staticClass: "form-control input-c font-weight-bold",
+                  attrs: { type: "text", name: "", id: "" },
+                  domProps: { value: this.data },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(this, "data", $event.target.value)
+                    }
+                  }
+                })
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col" }, [
-                _vm._v(
-                  "\n                            Numero fattura\n                            "
-                ),
-                _c("h5", [_vm._v(_vm._s(this.numeroFattura))])
+                _c("label", [_vm._v("Numero fattura")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: this.numeroFattura,
+                      expression: "this.numeroFattura"
+                    }
+                  ],
+                  staticClass: "form-control input-c font-weight-bold",
+                  attrs: { type: "text", name: "", id: "" },
+                  domProps: { value: this.numeroFattura },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(this, "numeroFattura", $event.target.value)
+                    }
+                  }
+                })
               ])
             ])
           ]
