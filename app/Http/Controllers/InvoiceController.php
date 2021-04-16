@@ -73,8 +73,13 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-         $pdf = PDF::loadView('pdf');
-        return $pdf->download('pdf_file.pdf');
+        echo "test";
+
+        $pdf = PDF::loadView('pdf');
+         Storage::put('public/pdf/invoice.pdf', $pdf->output());
+
+        return $pdf->download('invoice.pdf');
+
 
     }
 
@@ -84,9 +89,11 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
         //
+        echo "test";
+
     }
 
     /**
