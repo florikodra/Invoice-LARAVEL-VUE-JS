@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use Storage;
 use PDF;
 
 
@@ -42,11 +43,13 @@ class InvoiceController extends Controller
         $content = $pdf->download('pdf_file.pdf');
         Storage::put('public/name.pdf', $content) ; */
 
-        $pdf = PDF::loadView('pdf');
+        /* $pdf = PDF::loadView('pdf');
 
         Storage::put('public/pdf/invoice.pdf', $pdf->output());
 
-        return $pdf->download('invoice.pdf');
+        return $pdf->download('invoice.pdf'); */
+
+        return PDF::loadView('pdf')->save('public/pdf/my_stored_file.pdf')->stream('download.pdf');
 
 
 
@@ -61,7 +64,18 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-       echo "testtt";
+       $invoice = new Invoice();
+       $invoice->date = $request->data;
+       $invoice->reference_number = $request->reference_number;
+       $invoice->reference_person = $request->customer;
+       $invoice->company = $request->company;
+       $invoice->currency = $request->currency;
+       $invoice->tax = $request->tax;
+       $invoice->subtotal = $request->subtotal;
+       $invoice->total = $request->total;
+       $invoice->save();
+
+
 
     }
 
@@ -116,6 +130,8 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        /* $invoice=Invoice::findorFa($id); */
+        $invoice = Invoice::findOrFail($id);
+        $invoice->delete();
     }
 }

@@ -1,30 +1,41 @@
 <template>
-    <div>
-        <h2 class="text-center">Invoices List</h2>
- 
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Detail</th>
-                <!-- <th>Actions</th> -->
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="invoice in invoices" :key="invoice.id">
-                <td>{{ invoice.id }}</td>
-                <td>{{ invoice.date }}</td>
-                <td>{{ invoice.company }}</td>
-                <td>
-                    <div class="btn-group" role="group">
-                        <router-link :to="{name: 'edit', params: { id: invoice.id }}" class="btn btn-success">Edit</router-link>
-                        <button class="btn btn-danger" @click="deleteProduct(invoice.id)">Delete</button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Invoices List</h2>
+            </div>
+            <div class="card-body">
+                <div class="row table-responsive col-12">
+                    <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#id</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Riferimento</th>
+                            <th scope="col">Totale</th>
+                            <th scope="col">Creato</th>
+                            <th scope="col">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="invoice in invoices" :key="invoice.id">
+                            <th scope="row">{{ invoice.id }}</th>
+                            <td>{{ invoice.date }}</td>
+                            <td>{{ invoice.reference_number }}</td>
+                            <td>{{ invoice.total }}</td>
+                            <td>{{ invoice.created_at }}</td>
+                            <td>
+                                <button class="btn btn-outline-primary rounded-pill"><i class="fas fa-eye"></i></button> 
+                                <button class="btn btn-outline-warning rounded-pill"><i class="fas fa-pencil-alt"></i></button> 
+                                <button class="btn btn-outline-danger rounded-pill" @click="deleteInvoice(invoice.id)"><i class="fas fa-trash"></i></button> 
+                                <button class="btn btn-outline-dark rounded-pill"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
  
@@ -43,13 +54,15 @@
                 });
         },
         methods: {
-            deleteProduct(id) { 
-                this.axios
-                    .delete(`http://localhost:8000/api/invoices/${id}`)
-                    .then(response => {
-                        let i = this.invoices.map(data => data.id).indexOf(id);
-                        this.invoices.splice(i, 1)
-                    });
+            deleteInvoice(id) { 
+                if(confirm("Vuoi elimina fatture con id : "+id+"?")){
+                    this.axios
+                        .delete(`http://localhost:8000/api/invoices/${id}`)
+                        .then(response => {
+                            let i = this.invoices.map(data => data.id).indexOf(id);
+                            this.invoices.splice(i, 1)
+                        });
+                }
             }
         }
     }

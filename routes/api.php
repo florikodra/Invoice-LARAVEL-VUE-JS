@@ -21,6 +21,6 @@ use App\Http\Controllers\InvoiceController;
 
 Route::middleware('api')->group(function () {
     Route::resource('invoices', InvoiceController::class);
-    Route::post('invoice/pdf', [InvoiceController::class, 'pdf']);
+    Route::get('invoice/pdf', [InvoiceController::class, 'pdf']);
 
 });

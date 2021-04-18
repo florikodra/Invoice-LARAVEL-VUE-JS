@@ -26,7 +26,6 @@ class CreateInvoicesTable extends Migration
             $table->decimal('tax', 10, 2)->nullable();
             $table->decimal('subtotal', 10, 2)->nullable();
             $table->decimal('total', 10, 2)->nullable();
-
             $table->timestamps();
         });
         

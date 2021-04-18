@@ -121,8 +121,8 @@
 </template>
 
 <script>
-import html2pdf from 'html2pdf.js'
-import { jsPDF } from "jspdf";
+/* import html2pdf from 'html2pdf.js'
+import { jsPDF } from "jspdf"; */
 
 
 export default {
@@ -159,14 +159,14 @@ export default {
     methods: {
 
         downloadPDF(){
-            html2pdf(this.$refs.document, {
+          /*   html2pdf(this.$refs.document, {
                     margin: 0,
 					filename: 'document.pdf',
 					image: { type: 'pdf'},
                     /* html2canvas: {windowWidth: 1662}, */
-                    html2canvas: {width: 800},
+                   /* html2canvas: {width: 800},
 					jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-				})
+				}) */
             /* const doc = new jsPDF();
             const html = this.$refs.pdf.innerHTML;
             doc.html(this.$refs.pdf.innerHTML);

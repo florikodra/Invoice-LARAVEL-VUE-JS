@@ -3,14 +3,15 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav">
-                    <router-link to="/" class="nav-item nav-link btn btn-primary">Invoices List</router-link>
-                    <router-link to="/create" class="nav-item nav-link">Create Invoice</router-link>
+                    <router-link to="/" class="btn btn-primary text-light rounded-pill">Invoices List</router-link>
+                    <router-link to="/PDFInvoice" class="nav-item nav-link">Create Invoice</router-link>
                 </div>
             </div>
         </nav>
         
 
         <router-view> </router-view>
+        
     </div>
 </template>
  

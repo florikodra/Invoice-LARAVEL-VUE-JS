@@ -10063,3 +10063,16 @@ h3 {
   color: white;
   border: none;
 }
+
+.input-c:hover {
+  border: 1px solid #fff;
+}
+
+.item-input-c {
+  border: none;
+  background: transparent;
+}
+
+.item-input-c:hover {
+  border: 1px solid #1aafff;
+}
