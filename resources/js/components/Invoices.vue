@@ -25,8 +25,7 @@
                             <td>{{ invoice.total }}</td>
                             <td>{{ invoice.created_at }}</td>
                             <td>
-                                <button class="btn btn-outline-primary rounded-pill"><i class="fas fa-eye"></i></button> 
-                                <button class="btn btn-outline-warning rounded-pill"><i class="fas fa-pencil-alt"></i></button> 
+                                <router-link :to="{name: 'view', params: { id: invoice.id }}" class="btn btn-outline-primary rounded-pill"><i class="fas fa-eye"></i></router-link>
                                 <button class="btn btn-outline-danger rounded-pill" @click="deleteInvoice(invoice.id)"><i class="fas fa-trash"></i></button> 
                                 <button class="btn btn-outline-dark rounded-pill"><i class="fas fa-file-pdf"></i></button>
                             </td>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use Storage;
 use PDF;
 
@@ -75,6 +76,20 @@ class InvoiceController extends Controller
        $invoice->total = $request->total;
        $invoice->save();
 
+       $id = $invoice->id;
+
+       foreach ($request->invoiceItems as $invoiceItem) {
+           $item = new InvoiceItem();
+           $item->invoice_id = $id;
+           $item->name = $invoiceItem->title;
+           $item->description = $invoiceItem->description;
+           $item->qty = $invoiceItem->quantity;
+           $item->price = $invoiceItem->price;
+           $item->total = $invoiceItem->quantity*$invoiceItem->price;
+           $item->save();
+           
+       }
+
 
 
     }
@@ -87,14 +102,13 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        echo "test";
-
-        $pdf = PDF::loadView('pdf');
-         Storage::put('public/pdf/invoice.pdf', $pdf->output());
-
-        return $pdf->download('invoice.pdf');
-
-
+        $invoice = Invoice::find($id);
+        $items = new InvoiceItem();
+        $items = $items->where("invoice_id",$id)->get();
+        return response()->json(array(
+            'invoice' => $invoice,
+            'items' => $items
+        ));
     }
 
     /**

@@ -126,7 +126,7 @@ import html2pdf from 'html2pdf.js';
                 currency: "$",
                 company: "Sede operativa 58996 New York Tel: 5555 00005896 Mobile: 555 000555 N. IVA: STREET1",
                 customer: "Saluto Ditta Via 65556 City",
-                subTotal: 0,
+                subtotal: 0,
                 taxRate: 7.7,
                 total: 0.0,
                 invoiceItems: [
@@ -151,7 +151,7 @@ import html2pdf from 'html2pdf.js';
                 var total = this.invoiceItems.reduce(function(accumulator, invoiceItem) {
                     return accumulator + (invoiceItem.price * invoiceItem.quantity);
                 }, 0);
-                this.subTotal = total;
+                this.subtotal = total;
                 return total;
             },
 
@@ -195,7 +195,7 @@ import html2pdf from 'html2pdf.js';
                     reference_number: this.numeroFattura,
                     currency: this.currency,
                     tax: this.taxRate,
-                    subtotal: this.subTotal,
+                    subtotal: this.subtotal,
                     total: this.total,
                     invoiceItems: this.invoiceItems
                     })

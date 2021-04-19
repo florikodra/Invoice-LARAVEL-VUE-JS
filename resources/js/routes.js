@@ -1,6 +1,7 @@
 import Invoices from './components/Invoices.vue';
 import CreateInvoice from './components/CreateInvoice.vue';
 import PDFInvoice from './components/pdfInvoice.vue';
+import ViewInvoice from './components/ViewInvoice.vue';
 
  
 export const routes = [
@@ -18,6 +19,11 @@ export const routes = [
         name: 'PDFInvoice',
         path: '/PDFInvoice',
         component: PDFInvoice
+    },
+    {
+        name: 'view',
+        path: '/view/:id',
+        component: ViewInvoice
     },
     /* {
         name: 'edit',
