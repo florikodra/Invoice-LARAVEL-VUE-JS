@@ -2,7 +2,7 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h2 class="text-center">Invoices List</h2>
+                <h2 class="text-center">Tutte le Fatture</h2>
             </div>
             <div class="card-body">
                 <div class="row table-responsive col-12">
