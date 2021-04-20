@@ -2326,9 +2326,11 @@ __webpack_require__.r(__webpack_exports__);
       company: "",
       customer: "",
       subtotal: "",
+      taxtotal: 0,
       taxRate: "",
       total: 0,
       invoiceItems: [{
+        id: "",
         title: "",
         description: "",
         quantity: 1,
@@ -2596,18 +2598,10 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       })["finally"](function () {
-        return _this.loading = false;
+        return _this.$router.push({
+          name: 'invoices'
+        });
       });
-      /*  this.axios
-        .post("/api/invoices")
-        .then(response => this.$router.push({ 
-            data: this.data,
-            reference_number: this.numeroFattura,
-            currency: this.currency,
-            tax: this.taxRate,
-            total: this.total,
-            }))
-        .catch(err => console.log(err)); */
     },
     addRow: function addRow() {
       this.invoiceItems.push({
@@ -48939,7 +48933,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "col-3" }, [
                     _c("h5", { staticClass: "mt-2" }, [
-                      _vm._v(_vm._s(_vm.decimalDigits(0)))
+                      _vm._v(_vm._s(_vm.decimalDigits(_vm.taxTotal)))
                     ])
                   ])
                 ])
@@ -48986,7 +48980,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "col-6" }, [
                     _c("h4", { staticClass: "mt-2" }, [
-                      _vm._v(_vm._s(_vm.decimalDigits(_vm.total)))
+                      _vm._v(_vm._s(_vm.decimalDigits(_vm.grandTotal)))
                     ])
                   ])
                 ])
@@ -49283,7 +49277,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control input-c font-weight-bold",
-                    attrs: { type: "text", name: "", id: "" },
+                    attrs: { type: "text" },
                     domProps: { value: _vm.data },
                     on: {
                       input: function($event) {
@@ -49309,7 +49303,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control input-c font-weight-bold",
-                    attrs: { type: "text", name: "", id: "" },
+                    attrs: { type: "text" },
                     domProps: { value: _vm.numeroFattura },
                     on: {
                       input: function($event) {

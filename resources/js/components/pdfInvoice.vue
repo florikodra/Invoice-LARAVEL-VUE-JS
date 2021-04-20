@@ -25,12 +25,12 @@
                         <div class="col">
                             <label>Data</label>
                             <!-- <h5>{{ this.data }}</h5> -->
-                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="data">
+                            <input type="text" class="form-control input-c font-weight-bold" v-model="data">
                         </div>
                         <div class="col">
                             <label>Numero fattura</label>
                             <!-- <h5>{{ this.numeroFattura }}</h5> -->
-                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="numeroFattura">
+                            <input type="text" class="form-control input-c font-weight-bold" v-model="numeroFattura">
                         </div>
                     </div>
                 </div>
@@ -200,17 +200,9 @@ import html2pdf from 'html2pdf.js';
                     invoiceItems: this.invoiceItems
                     })
                 .catch(err => console.log(err))
-                .finally(() => (this.loading = false));
-              /*  this.axios
-                .post("/api/invoices")
-                .then(response => this.$router.push({ 
-                    data: this.data,
-                    reference_number: this.numeroFattura,
-                    currency: this.currency,
-                    tax: this.taxRate,
-                    total: this.total,
-                    }))
-                .catch(err => console.log(err)); */
+                .finally(() => (
+                    this.$router.push({name: 'invoices'})
+                    ));
                 
 
 

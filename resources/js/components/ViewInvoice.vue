@@ -76,7 +76,7 @@
                                 <h5 class="mt-2">{{taxRate}}</h5>
                             </div>
                             <div class="col-3">
-                                <h5 class="mt-2">{{decimalDigits(0)}}</h5>
+                                <h5 class="mt-2">{{decimalDigits(taxTotal)}}</h5>
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                                 <h4><input type="text" v-model="currency" class="form-control input-c font-weight-bold"></h4>
                             </div>
                             <div class="col-6">
-                                <h4 class="mt-2">{{decimalDigits(total)}}</h4>
+                                <h4 class="mt-2">{{decimalDigits(grandTotal)}}</h4>
                             </div>
                         </div>
                     </div>
@@ -126,10 +126,12 @@
                 company: "",
                 customer: "",
                 subtotal: "",
+                taxtotal: 0,
                 taxRate: "",
                 total: 0,
                 invoiceItems: [
                     {
+                        id: "",
                         title: "",
                         description: "",
                         quantity: 1,

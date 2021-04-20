@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use Storage;
 use PDF;
+use Carbon\Carbon;
 
 
 class InvoiceController extends Controller
@@ -77,19 +78,72 @@ class InvoiceController extends Controller
        $invoice->save();
 
        $id = $invoice->id;
+       $invoiceItems = [];
 
-       foreach ($request->invoiceItems as $invoiceItem) {
+       $items= $request->get('invoiceItems');
+        foreach($items as $item) {
+           
+            $invoiceItems [] = [
+                'invoice_id' => $id,
+                'title' => $item['title'],
+                'description' => $item['description'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'total' => $item['price']*$item['quantity'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+        }
+
+        InvoiceItem::insert( $invoiceItems);
+
+       /*
+        $item = new InvoiceItem();
+           $item->invoice_id = $id;
+           $item->title = $item['title'];
+           $item->description = $item['description'];
+           $item->quantity = $item['quantity'];
+           $item->price = $item['price'];
+           $item->total =$item['price']*$item['quantity'];
+           $item->save();
+       
+       $items= $request->get('invoiceItems');
+        foreach($items as $item) {
+            InvoiceItem::create([
+                'invoice_id' => $id,
+                'title' => $item['title'],
+                'description' => $item['description'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'total' => $item['price']*$item['quantity']
+    
+            ]);
+        } */
+      
+       /*  $data = $request->get('invoiceItems');
+
+        $data = json_decode($data, true); */
+       /*  $data = [
+            ['invoice_id'=>$id, 'title'=> 'testtt'],
+            ['invoice_id'=>$id, 'title'=> 'test'],
+            //...
+        ]; */
+
+       /*  InvoiceItem::insert( $data); */
+
+      /*  foreach ($request->get('invoiceItems') as $i =>  $invoiceItem) {
            $item = new InvoiceItem();
            $item->invoice_id = $id;
-           $item->name = $invoiceItem->title;
+           $item->title = $invoiceItem->title;
            $item->description = $invoiceItem->description;
-           $item->qty = $invoiceItem->quantity;
+           $item->quantity = $invoiceItem->quantity;
            $item->price = $invoiceItem->price;
            $item->total = $invoiceItem->quantity*$invoiceItem->price;
-           $item->save();
+           $item->create();
            
-       }
+       } */
 
+       var_dump($request->get('invoiceItems'));
 
 
     }
