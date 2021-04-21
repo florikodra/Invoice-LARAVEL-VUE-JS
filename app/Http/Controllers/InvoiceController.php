@@ -34,28 +34,20 @@ class InvoiceController extends Controller
     }
     
     /**
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function pdf(Request $request)
+    public function pdf($id)
     {
-        //var_dump($request->invoiceItems);
-       /*  $pdf = PDF::loadView('pdf');
-        $content = $pdf->download('pdf_file.pdf');
-        Storage::put('public/name.pdf', $content) ; */
-
-        /* $pdf = PDF::loadView('pdf');
-
-        Storage::put('public/pdf/invoice.pdf', $pdf->output());
-
-        return $pdf->download('invoice.pdf'); */
-
-        return PDF::loadView('pdf')->save('public/pdf/my_stored_file.pdf')->stream('download.pdf');
-
-
-
-        //return "https://google.com";
+        $invoice = Invoice::findOrFail($id);
+        $items = $invoice->items;
+        $pdf = PDF::loadView('pdf',compact('invoice','items'));
+        return $pdf->download('invoice.pdf');
+       /*  echo "<pre>";
+        print_r($items);
+        echo "</pre>"; */
     }
 
     /**
@@ -97,55 +89,7 @@ class InvoiceController extends Controller
 
         InvoiceItem::insert( $invoiceItems);
 
-       /*
-        $item = new InvoiceItem();
-           $item->invoice_id = $id;
-           $item->title = $item['title'];
-           $item->description = $item['description'];
-           $item->quantity = $item['quantity'];
-           $item->price = $item['price'];
-           $item->total =$item['price']*$item['quantity'];
-           $item->save();
-       
-       $items= $request->get('invoiceItems');
-        foreach($items as $item) {
-            InvoiceItem::create([
-                'invoice_id' => $id,
-                'title' => $item['title'],
-                'description' => $item['description'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'total' => $item['price']*$item['quantity']
-    
-            ]);
-        } */
-      
-       /*  $data = $request->get('invoiceItems');
-
-        $data = json_decode($data, true); */
-       /*  $data = [
-            ['invoice_id'=>$id, 'title'=> 'testtt'],
-            ['invoice_id'=>$id, 'title'=> 'test'],
-            //...
-        ]; */
-
-       /*  InvoiceItem::insert( $data); */
-
-      /*  foreach ($request->get('invoiceItems') as $i =>  $invoiceItem) {
-           $item = new InvoiceItem();
-           $item->invoice_id = $id;
-           $item->title = $invoiceItem->title;
-           $item->description = $invoiceItem->description;
-           $item->quantity = $invoiceItem->quantity;
-           $item->price = $invoiceItem->price;
-           $item->total = $invoiceItem->quantity*$invoiceItem->price;
-           $item->create();
-           
-       } */
-
-       var_dump($request->get('invoiceItems'));
-
-
+        return $id;
     }
 
     /**
@@ -157,11 +101,9 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $invoice = Invoice::find($id);
-        $items = new InvoiceItem();
-        $items = $items->where("invoice_id",$id)->get();
         return response()->json(array(
             'invoice' => $invoice,
-            'items' => $items
+            'items' => $invoice->items,
         ));
     }
 
@@ -198,7 +140,6 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        /* $invoice=Invoice::findorFa($id); */
         $invoice = Invoice::findOrFail($id);
         $invoice->delete();
     }

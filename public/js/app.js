@@ -2076,12 +2076,57 @@ var day = "".concat(today.getDate()).padStart(2, "0");
         subtotal: this.subtotal,
         total: this.total,
         invoiceItems: this.invoiceItems
-      })["catch"](function (err) {
-        return console.log(err);
-      })["finally"](function () {
-        return _this.$router.push({
-          name: 'invoices'
+      }).then(function (response) {
+        _this.$router.push({
+          name: 'view',
+          params: {
+            id: response.data
+          }
         });
+      }, function (error) {
+        console.log(error);
+      });
+    },
+    saveInvoicePDF: function saveInvoicePDF() {
+      var _this2 = this;
+
+      axios.post('/api/invoices', {
+        data: this.data,
+        company: this.company,
+        customer: this.customer,
+        reference_number: this.numeroFattura,
+        currency: this.currency,
+        tax: this.taxRate,
+        subtotal: this.subtotal,
+        total: this.total,
+        invoiceItems: this.invoiceItems
+      }).then(function (response) {
+        _this2.downloadinv(response.data);
+
+        _this2.$router.push({
+          name: 'view',
+          params: {
+            id: response.data
+          }
+        });
+      }, function (error) {
+        console.log(error);
+      });
+    },
+    downloadinv: function downloadinv(id) {
+      var _this3 = this;
+
+      axios({
+        url: '/api/invoice/pdf' + id,
+        method: 'GET',
+        responseType: 'blob'
+      }).then(function (response) {
+        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+        var fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', _this3.numeroFattura + ".pdf");
+        document.body.appendChild(fileLink);
+        fileLink.click();
       });
     },
     addRow: function addRow() {
@@ -2100,8 +2145,8 @@ var day = "".concat(today.getDate()).padStart(2, "0");
     },
     convert: function convert() {
       html2pdf_js__WEBPACK_IMPORTED_MODULE_0___default()(this.$refs.document, {
-        margin: 0,
-        "with": 21,
+        margin: 2,
+        //width: 1000,
         filename: this.numeroFattura + '.pdf',
         image: {
           type: 'pdf'
@@ -47742,9 +47787,12 @@ var render = function() {
           {
             staticClass: "btn btn-danger rounded-pill mr-2",
             attrs: { type: "button" },
-            on: { click: _vm.convert }
+            on: { click: _vm.saveInvoicePDF }
           },
-          [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" SCARICA PDF")]
+          [
+            _c("i", { staticClass: "fas fa-file-pdf" }),
+            _vm._v(" SALVA & SCARICA PDF")
+          ]
         ),
         _vm._v(" "),
         _c(
@@ -48193,7 +48241,15 @@ var render = function() {
       [
         _vm._m(5),
         _vm._v(" "),
-        _vm._m(6),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-danger rounded-pill mr-2",
+            attrs: { type: "button" },
+            on: { click: _vm.downloadinv }
+          },
+          [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" SCARICA PDF")]
+        ),
         _vm._v(" "),
         _c(
           "button",
@@ -48213,7 +48269,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header fill" }, [
+    return _c("header", { staticClass: "card-header fill" }, [
       _c("img", { attrs: { src: "/pdf-header.jpg", alt: "" } })
     ])
   },
@@ -48261,7 +48317,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer fill" }, [
+    return _c("footer", { staticClass: "card-footer fill" }, [
       _c("img", { attrs: { src: "/pdf-footer.jpg", alt: "" } })
     ])
   },
@@ -48276,19 +48332,6 @@ var staticRenderFns = [
         attrs: { type: "button" }
       },
       [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SALVA")]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-danger rounded-pill mr-2",
-        attrs: { type: "button" }
-      },
-      [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" SCARICA PDF")]
     )
   }
 ]

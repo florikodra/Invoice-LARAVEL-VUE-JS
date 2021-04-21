@@ -2,13 +2,13 @@
     <div class="container">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
             <button class="btn btn-success rounded-pill mr-2" type="button" @click="saveInvoice"><i class="fas fa-save"></i> SALVA</button>
-            <button class="btn btn-danger rounded-pill mr-2" type="button" @click="convert"><i class="fas fa-file-pdf"></i> SCARICA PDF</button>
+            <button class="btn btn-danger rounded-pill mr-2" type="button" @click="saveInvoicePDF"><i class="fas fa-file-pdf"></i> SALVA & SCARICA PDF</button>
             <button class="btn btn-secondary rounded-pill" type="button" @click="reset"><i class="fas fa-undo"></i> RESET</button>
         </div>
         <div class="card">
-            <div class="card-header fill">
+            <header class="card-header fill">
                 <img src="/pdf-header.jpg" alt="" />
-            </div>
+            </header>
             <div class="card-body ml-3 mr-3 text-secondary"  ref="document">
                 <div class="row justify-content-between mb-5">
                     <div class="col-lg-4 col-sm-12 col-md-6" >
@@ -103,13 +103,13 @@
 
 
             </div>
-            <div class="card-footer fill">
+            <footer class="card-footer fill">
                 <img src="/pdf-footer.jpg" alt="" />
-            </div>
+            </footer>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-5">
             <button class="btn btn-success rounded-pill mr-2" type="button"><i class="fas fa-save"></i> SALVA</button>
-            <button class="btn btn-danger rounded-pill mr-2" type="button"><i class="fas fa-file-pdf"></i> SCARICA PDF</button>
+            <button class="btn btn-danger rounded-pill mr-2" type="button" @click="downloadinv"><i class="fas fa-file-pdf"></i> SCARICA PDF</button>
             <button class="btn btn-secondary rounded-pill" type="button" @click="reset"><i class="fas fa-undo"></i> RESET</button>
         </div>
     </div>
@@ -117,7 +117,6 @@
  
 <script>
 import html2pdf from 'html2pdf.js';
-
 
 const today = new Date();
 const year = today.getFullYear();
@@ -206,13 +205,48 @@ const day = `${today.getDate()}`.padStart(2, "0");
                     total: this.total,
                     invoiceItems: this.invoiceItems
                     })
-                .catch(err => console.log(err))
-                .finally(() => (
-                    this.$router.push({name: 'invoices'})
-                    ));
-                
+                .then((response) => {
+                   this.$router.push({name: 'view',params: { id: response.data }})
+                }, (error) => {
+                    console.log(error);
+                });
+              
+            },
+            saveInvoicePDF() {
+                axios.post('/api/invoices',{
+                    data: this.data,
+                    company: this.company,
+                    customer: this.customer,
+                    reference_number: this.numeroFattura,
+                    currency: this.currency,
+                    tax: this.taxRate,
+                    subtotal: this.subtotal,
+                    total: this.total,
+                    invoiceItems: this.invoiceItems
+                    })
+                .then((response) => {
+                    this.downloadinv(response.data);
+                    this.$router.push({name: 'view',params: { id: response.data }})
+                }, (error) => {
+                    console.log(error);
+                });
+            },
+           
+            downloadinv(id){
+                    axios({
+                    url: '/api/invoice/pdf'+id,
+                    method: 'GET',
+                    responseType: 'blob',
+                }).then((response) => {
+                     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                     var fileLink = document.createElement('a');
 
+                     fileLink.href = fileURL;
+                     fileLink.setAttribute('download', this.numeroFattura+".pdf");
+                     document.body.appendChild(fileLink);
 
+                     fileLink.click();
+                });
             },
             addRow(){
                 this.invoiceItems.push({
@@ -230,8 +264,8 @@ const day = `${today.getDate()}`.padStart(2, "0");
             },
             convert(){
                 html2pdf(this.$refs.document, {
-                    margin: 0,
-                    with: 21,
+                    margin: 2,
+                    //width: 1000,
 					filename: this.numeroFattura+'.pdf',
 					image: { type: 'pdf'}, 
                     html2canvas: {  },
