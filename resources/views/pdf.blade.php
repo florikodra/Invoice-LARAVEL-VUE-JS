@@ -65,7 +65,7 @@
         <main>
             <div class="container" >
                 <div class="row mb-5 mt-5">
-                    <div class="col-md-4 text-secondary" >
+                    <div class="col-md-4 text-secondary">
                         {{$invoice->company}}
                     </div>
                     <div class="col-md-4 text-right float-right text-secondary">
@@ -95,19 +95,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php var_dump($items) ?>
                                 @foreach ($items as $item)
                                     <tr>
                                         <td class="text-secondary"><b>{{$item->title}}</b><br><small>{{$item->description}}</small></td>
                                         <td class="text-right text-secondary"><b class="float-left">{{$invoice->currency}}</b> {{$item->price}}</td>
                                         <td class="text-center text-secondary">
-                                        <?php
-                                            if($invoice->fixed == '1'){
-                                                echo "test";
-                                            }
-
-                                        ?>
-                                       
+                                        @if($item->fixed)
+                                            fisso
+                                        @else
+                                            {{$item->quantity}}
+                                        @endif
                                         </td>
                                         <td class="text-right text-secondary"><b class="float-left">{{$invoice->currency}}</b> {{$item->total}}</td>
                                     </tr>

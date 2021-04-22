@@ -19,7 +19,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->decimal('quantity', 5, 2)->nullable()->default(1.00);
-            $table->boolean('fixed')->nullable();
+            $table->boolean('fixed')->nullable()->default(false);
 
             $table->decimal('price', 5, 2)->nullable();
             $table->decimal('total', 5, 2)->nullable();
