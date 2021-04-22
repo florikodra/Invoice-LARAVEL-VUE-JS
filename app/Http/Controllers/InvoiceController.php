@@ -21,7 +21,7 @@ class InvoiceController extends Controller
     {
         $invoices = Invoice::all()->toArray();
         return array_reverse($invoices);
-        echo "test";
+
 
     }
 
@@ -46,7 +46,8 @@ class InvoiceController extends Controller
         $invoice = Invoice::findOrFail($id);
         $items = $invoice->items;
         $pdf = PDF::loadView('pdf',compact('invoice','items'));
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf');
+
        /*  echo "<pre>";
         print_r($items);
         echo "</pre>"; */
@@ -82,6 +83,7 @@ class InvoiceController extends Controller
                 'title' => $item['title'],
                 'description' => $item['description'],
                 'quantity' => $item['quantity'],
+                'fixed' => $item['fixed'],
                 'price' => $item['price'],
                 'total' => $item['price']*$item['quantity'],
                 'created_at' => Carbon::now(),
@@ -143,6 +145,7 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         $invoice = Invoice::findOrFail($id);
+        $invoice->items()->delete();
         $invoice->delete();
     }
 }

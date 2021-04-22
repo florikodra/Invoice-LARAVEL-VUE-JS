@@ -8,6 +8,7 @@
             @page {
                 margin: 0cm 0cm;
             }
+          
             
             /** Define now the real margins of every page in the PDF **/
             body {
@@ -18,13 +19,13 @@
             }
 
             /** Define the header rules **/
-            header {
+            .header {
                 position: fixed;
                 top: 0cm;
                 left: 0cm;
                 right: 0cm;
                 height: 3cm;
-                margin-bottom: 20px;
+                margin-bottom: 4cm;
             }
 
             /** Define the footer rules **/
@@ -47,14 +48,15 @@
             .color-c{
                 color: #1aafff;
             }
+
         </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/app.css">
 </head>
     <body>
-        <header>
+        <div class="header">
             <img src="{{ public_path("/pdf-header.jpg") }}" width="100%" height="100%"/>
-        </header>
+        </div>
 
         <footer>
             <img src="{{ public_path("/pdf-footer.jpg") }}" width="100%" height="100%"/>
@@ -63,14 +65,14 @@
         <main>
             <div class="container" >
                 <div class="row mb-5 mt-5">
-                    <div class="col-md-4" >
+                    <div class="col-md-4 text-secondary" >
                         {{$invoice->company}}
                     </div>
-                    <div class="col-md-4 text-right float-right">
+                    <div class="col-md-4 text-right float-right text-secondary">
                         {{$invoice->reference_person}}
                     </div>
                 </div>
-                <h2 class="text-secondary mb-3 font-weight-bold">Fattura</h2>
+                <h2 class="text-secondary mb-3 font-weight-bold">Fattura <?php $PAGE_NUM ?></h2>
                 <div class="col-md-4 backg-c text-white pt-2 pb-2 pl-4 pr-4 under-fattura">
                     <div class="col-md-12">
                         <div>
@@ -93,12 +95,21 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php var_dump($items) ?>
                                 @foreach ($items as $item)
                                     <tr>
-                                        <td><b>{{$item->title}}</b><br><small>{{$item->description}}</small></td>
-                                        <td class="text-right"><b class="float-left">{{$invoice->currency}}</b> {{$item->price}}</td>
-                                        <td class="text-center">{{$item->quantity}}</td>
-                                        <td class="text-right"><b class="float-left">{{$invoice->currency}}</b> {{$item->total}}</td>
+                                        <td class="text-secondary"><b>{{$item->title}}</b><br><small>{{$item->description}}</small></td>
+                                        <td class="text-right text-secondary"><b class="float-left">{{$invoice->currency}}</b> {{$item->price}}</td>
+                                        <td class="text-center text-secondary">
+                                        <?php
+                                            if($invoice->fixed == '1'){
+                                                echo "test";
+                                            }
+
+                                        ?>
+                                       
+                                        </td>
+                                        <td class="text-right text-secondary"><b class="float-left">{{$invoice->currency}}</b> {{$item->total}}</td>
                                     </tr>
                                 @endforeach
                                
@@ -107,36 +118,30 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 float-right pr-4">
+               {{--  <div class="col-md-12 float-right pr-4">
                     <div class="col-lg-4 col-sm-12 col-md-4 pl-2 pr-2 text-lg-center text-sm-center">
                         <div class="row">
                             <div class="row col-7 mb-2">
                                 <h5 class="mt-2">IVA </h5>
                             </div>
                             <div class="col-2">
-                                <h5 class="mt-2">{{$invoice->tax}} %</h5>
+                                <h5 class="mt-2">{{$invoice->tax}} </h5>
                             </div>
                             <div class="col-3">
                                 <h5 class="mt-2">{{$invoice->total-$invoice->subtotal}}</h5>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-12 float-right mr-4">
-                    <div class="col-md-5 backg-c text-white rounded-lg text-center">
-                        <div class="row">
-                            <div class="col-4">
-                                <h4 class="mt-2">Totale</h4>
-                            </div>
-                            <div class="col-2">
-                                <h4>{{$invoice->currency}}</h4>
-                            </div>
-                            <div class="col-6">
-                                <h4 class="mt-2">{{$invoice->total}}</h4>
-                            </div>
+                </div> --}}
+                
+                
+                <div class="col-md-4 backg-c text-white float-right under-fattura">
+                    <div class="col-md-12 pt-2 ">
+                                <h6>IVA ({{$invoice->tax}}%) {{$invoice->currency}} <b class="float-right">{{number_format($invoice->total-$invoice->subtotal,2)}}</b></h6>
                         </div>
-                    </div>
+                    <div class="col-md-12">
+                                <h4>Totale {{$invoice->currency}} <b class="float-right">{{$invoice->total}}</b></h4>
+                        </div>
                 </div>
            
             </div>

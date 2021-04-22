@@ -13,7 +13,6 @@ import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
 import axios from 'axios';
 import { routes } from './routes';
-//import { jsPDF } from "jspdf";
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);

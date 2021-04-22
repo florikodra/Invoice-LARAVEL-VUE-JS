@@ -1996,6 +1996,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 var today = new Date();
 var year = today.getFullYear();
@@ -2017,6 +2019,7 @@ var day = "".concat(today.getDate()).padStart(2, "0");
         title: "",
         description: "",
         quantity: 1,
+        fixed: false,
         price: ""
       }]
     };
@@ -2059,7 +2062,8 @@ var day = "".concat(today.getDate()).padStart(2, "0");
           title: "",
           description: "",
           quantity: 1,
-          price: 0
+          fixed: false,
+          price: ""
         }];
       }
     },
@@ -2117,7 +2121,7 @@ var day = "".concat(today.getDate()).padStart(2, "0");
       var _this3 = this;
 
       axios({
-        url: '/api/invoice/pdf' + id,
+        url: '/api/invoice/pdf/' + id,
         method: 'GET',
         responseType: 'blob'
       }).then(function (response) {
@@ -2134,7 +2138,8 @@ var day = "".concat(today.getDate()).padStart(2, "0");
         title: "",
         description: "",
         quantity: 1,
-        price: 0
+        fixed: false,
+        price: ""
       });
     },
     deleteItem: function deleteItem(index) {
@@ -2169,6 +2174,9 @@ var day = "".concat(today.getDate()).padStart(2, "0");
       var mi = today.getMinutes();
       var s = today.getSeconds();
       return y + "" + m + "" + d + "" + h + "" + mi + "" + s;
+    },
+    updateQty: function updateQty(index) {
+      this.invoiceItems[index].quantity = 1;
     }
   }
 });
@@ -2399,6 +2407,7 @@ __webpack_require__.r(__webpack_exports__);
       taxtotal: 0,
       taxRate: "",
       total: 0,
+      toUpdate: false,
       invoiceItems: [{
         id: "",
         title: "",
@@ -2486,7 +2495,6 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 
 
 
- //import { jsPDF } from "jspdf";
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_4__.default);
 Vue.use((vue_axios__WEBPACK_IMPORTED_MODULE_1___default()), (axios__WEBPACK_IMPORTED_MODULE_2___default()));
@@ -48041,7 +48049,70 @@ var render = function() {
                                 )
                               }
                             }
-                          })
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "text-center backg-c pt-1 rounded-lg text-white"
+                            },
+                            [
+                              _c("label", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: invoiceItem.fixed,
+                                      expression: "invoiceItem.fixed"
+                                    }
+                                  ],
+                                  staticClass: "form-check-input",
+                                  attrs: { type: "checkbox" },
+                                  domProps: {
+                                    checked: Array.isArray(invoiceItem.fixed)
+                                      ? _vm._i(invoiceItem.fixed, null) > -1
+                                      : invoiceItem.fixed
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.updateQty(index)
+                                    },
+                                    change: function($event) {
+                                      var $$a = invoiceItem.fixed,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              invoiceItem,
+                                              "fixed",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              invoiceItem,
+                                              "fixed",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(invoiceItem, "fixed", $$c)
+                                      }
+                                    }
+                                  }
+                                }),
+                                _vm._v(" Fisso")
+                              ])
+                            ]
+                          )
                         ]),
                         _vm._v(" "),
                         _c(
@@ -48051,32 +48122,34 @@ var render = function() {
                             attrs: { scope: "row" }
                           },
                           [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: invoiceItem.quantity,
-                                  expression: "invoiceItem.quantity"
-                                }
-                              ],
-                              staticClass:
-                                "form-control col-md-6 m-auto item-input-c",
-                              attrs: { type: "number", placeholder: "1" },
-                              domProps: { value: invoiceItem.quantity },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                            !invoiceItem.fixed
+                              ? _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: invoiceItem.quantity,
+                                      expression: "invoiceItem.quantity"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "form-control col-md-6 m-auto item-input-c",
+                                  attrs: { type: "number", placeholder: "1" },
+                                  domProps: { value: invoiceItem.quantity },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        invoiceItem,
+                                        "quantity",
+                                        $event.target.value
+                                      )
+                                    }
                                   }
-                                  _vm.$set(
-                                    invoiceItem,
-                                    "quantity",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
+                                })
+                              : _vm._e()
                           ]
                         ),
                         _vm._v(" "),
@@ -48409,7 +48482,17 @@ var render = function() {
                         [_c("i", { staticClass: "fas fa-trash" })]
                       ),
                       _vm._v(" "),
-                      _vm._m(2, true)
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-outline-dark rounded-pill",
+                          attrs: {
+                            href: "/invoice/pdf/" + invoice.id,
+                            target: "_blank"
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-file-pdf" })]
+                      )
                     ],
                     1
                   )
@@ -48451,14 +48534,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Azioni")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-outline-dark rounded-pill" }, [
-      _c("i", { staticClass: "fas fa-file-pdf" })
-    ])
   }
 ]
 render._withStripped = true
@@ -48484,7 +48559,36 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm._m(0),
+    _c(
+      "div",
+      { staticClass: "d-grid gap-2 d-md-flex justify-content-md-end mb-2" },
+      [
+        _vm.toUpdate
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-warning rounded-pill mr-2",
+                attrs: { type: "button" }
+              },
+              [_c("i", { staticClass: "fas fa-upload" }), _vm._v(" UPDATE")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-danger rounded-pill mr-2",
+            attrs: {
+              href: "/invoice/pdf/" + _vm.$route.params.id,
+              target: "_blank"
+            }
+          },
+          [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" PDF")]
+        ),
+        _vm._v(" "),
+        _vm._m(0)
+      ]
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "card" }, [
       _vm._m(1),
@@ -48920,36 +49024,12 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
-      { staticClass: "d-grid gap-2 d-md-flex justify-content-md-end mb-2" },
-      [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success rounded-pill mr-2",
-            attrs: { type: "button" }
-          },
-          [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SALVA")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-danger rounded-pill mr-2",
-            attrs: { type: "button" }
-          },
-          [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" SCARICA PDF")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-secondary rounded-pill",
-            attrs: { type: "button" }
-          },
-          [_c("i", { staticClass: "fas fa-undo" }), _vm._v(" RESET")]
-        )
-      ]
+      "button",
+      {
+        staticClass: "btn btn-secondary rounded-pill",
+        attrs: { type: "button" }
+      },
+      [_c("i", { staticClass: "fas fa-undo" }), _vm._v(" RESET")]
     )
   },
   function() {

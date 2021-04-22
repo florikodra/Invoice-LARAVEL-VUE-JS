@@ -54,9 +54,11 @@
                                     </td>
                                     <td class="text-right"><b class="float-left col-md-6">{{currency}}</b>
                                     <input type="number" step="0.1" class="form-control col-md-6 text-right item-input-c" placeholder="100" v-model="invoiceItem.price">
+                                    <div  class="text-center backg-c pt-1 rounded-lg text-white"><label><input type="checkbox" class="form-check-input" v-model="invoiceItem.fixed" v-on:click="updateQty(index)"> Fisso</label></div>
                                     </td>
                                     <td scope="row" class="text-center">
-                                        <input type="number" class="form-control col-md-6 m-auto item-input-c" placeholder="1" v-model="invoiceItem.quantity">
+                                        
+                                        <input type="number" class="form-control col-md-6 m-auto item-input-c" placeholder="1" v-model="invoiceItem.quantity" v-if="!invoiceItem.fixed">
                                     </td>
                                     <td class="text-right mr-2"><b class="float-left">{{currency}}</b>{{ decimalDigits(invoiceItem.quantity*invoiceItem.price) }}</td>
                                     <button class="btn btn-danger btn-sm rounded-circle mt-3 mr-2" v-on:click="deleteItem(index)" data-html2canvas-ignore="true">X</button>
@@ -140,6 +142,7 @@ const day = `${today.getDate()}`.padStart(2, "0");
                         title: "",
                         description: "",
                         quantity: 1,
+                        fixed: false,
                         price: ""
                     }
                 ]
@@ -187,7 +190,8 @@ const day = `${today.getDate()}`.padStart(2, "0");
                             title: "",
                             description: "",
                             quantity: 1,
-                            price: 0
+                            fixed: false,
+                            price: ""
                         }
                     ];
                 }
@@ -234,7 +238,7 @@ const day = `${today.getDate()}`.padStart(2, "0");
            
             downloadinv(id){
                     axios({
-                    url: '/api/invoice/pdf'+id,
+                    url: '/api/invoice/pdf/'+id,
                     method: 'GET',
                     responseType: 'blob',
                 }).then((response) => {
@@ -253,7 +257,8 @@ const day = `${today.getDate()}`.padStart(2, "0");
                         title: "",
                         description: "",
                         quantity: 1,
-                        price: 0
+                        fixed: false,
+                        price: ""
                     });
             },
             deleteItem(index) {
@@ -282,6 +287,9 @@ const day = `${today.getDate()}`.padStart(2, "0");
                 var mi = today.getMinutes();
                 var s = today.getSeconds();
                 return y + "" + m + "" + d + "" + h + "" + mi + "" + s;
+            },
+            updateQty(index){
+                this.invoiceItems[index].quantity = 1;
             }
 
         }

@@ -1,8 +1,8 @@
 <template>
    <div class="container">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-            <button class="btn btn-success rounded-pill mr-2" type="button" ><i class="fas fa-save"></i> SALVA</button>
-            <button class="btn btn-danger rounded-pill mr-2" type="button" ><i class="fas fa-file-pdf"></i> SCARICA PDF</button>
+            <button class="btn btn-warning rounded-pill mr-2" type="button" v-if="toUpdate"><i class="fas fa-upload"></i> UPDATE</button>
+            <a class="btn btn-danger rounded-pill mr-2" :href="'/invoice/pdf/'+$route.params.id" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
             <button class="btn btn-secondary rounded-pill" type="button" ><i class="fas fa-undo"></i> RESET</button>
         </div>
         <div class="card">
@@ -129,6 +129,7 @@
                 taxtotal: 0,
                 taxRate: "",
                 total: 0,
+                toUpdate: false,
                 invoiceItems: [
                     {
                         id: "",
