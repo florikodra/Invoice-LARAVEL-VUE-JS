@@ -21,6 +21,8 @@ class InvoiceController extends Controller
     {
         $invoices = Invoice::all()->toArray();
         return array_reverse($invoices);
+        echo "test";
+
     }
 
     /**
