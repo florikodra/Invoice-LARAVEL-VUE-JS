@@ -2311,6 +2311,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2326,10 +2327,10 @@ __webpack_require__.r(__webpack_exports__);
       total: 0,
       toUpdate: false,
       invoiceItems: [{
-        id: "",
         title: "",
         description: "",
         quantity: 1,
+        fixed: false,
         price: 0
       }]
     };
@@ -2338,7 +2339,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.axios.get("http://localhost:8000/api/invoices/".concat(this.$route.params.id)).then(function (res) {
-      console.log(res);
+      console.log(res.data);
       _this.invoice = res.data.invoice;
       _this.data = res.data.invoice.date;
       _this.numeroFattura = res.data.invoice.reference_number;
@@ -2368,17 +2369,39 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    updateProduct: function updateProduct() {
-      var _this2 = this;
-
-      this.axios.patch("http://localhost:8000/api/invoices/".concat(this.$route.params.id), this.invoice).then(function (res) {
-        _this2.$router.push({
-          name: 'home'
-        });
+    updateInvoice: function updateInvoice() {
+      this.axios.patch("http://localhost:8000/api/invoices/".concat(this.$route.params.id), {
+        data: this.data,
+        company: this.company,
+        customer: this.customer,
+        reference_number: this.numeroFattura,
+        currency: this.currency,
+        tax: this.taxRate,
+        subtotal: this.subtotal,
+        total: this.total,
+        invoiceItems: this.invoiceItems
+      }).then(function (res) {
+        console.log(res); //this.$router.push({ name: 'home' });
       });
     },
     decimalDigits: function decimalDigits(value) {
       return value.toFixed(2);
+    },
+    addRow: function addRow() {
+      this.invoiceItems.push({
+        id: "",
+        title: "",
+        description: "",
+        quantity: 1,
+        fixed: false,
+        price: ""
+      });
+    },
+    deleteItem: function deleteItem(index) {
+      this.invoiceItems.splice(index, 1);
+    },
+    updateQty: function updateQty(index) {
+      this.invoiceItems[index].quantity = 1;
     }
   }
 });
@@ -2499,6 +2522,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -48482,7 +48506,6 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-success rounded-pill mt-3",
-                        attrs: { "data-html2canvas-ignore": "true" },
                         on: { click: _vm.addRow }
                       },
                       [_vm._v(" + Aggiungi Prodotto")]
@@ -48607,16 +48630,27 @@ var render = function() {
         staticClass: "d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-5"
       },
       [
-        _vm._m(5),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success rounded-pill mr-2",
+            attrs: { type: "button" },
+            on: { click: _vm.saveInvoice }
+          },
+          [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SALVA")]
+        ),
         _vm._v(" "),
         _c(
           "button",
           {
             staticClass: "btn btn-danger rounded-pill mr-2",
             attrs: { type: "button" },
-            on: { click: _vm.downloadinv }
+            on: { click: _vm.saveInvoicePDF }
           },
-          [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" SCARICA PDF")]
+          [
+            _c("i", { staticClass: "fas fa-file-pdf" }),
+            _vm._v(" SALVA & SCARICA PDF")
+          ]
         ),
         _vm._v(" "),
         _c(
@@ -48688,19 +48722,6 @@ var staticRenderFns = [
     return _c("footer", { staticClass: "card-footer fill" }, [
       _c("img", { attrs: { src: "/pdf-footer.jpg", alt: "" } })
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-success rounded-pill mr-2",
-        attrs: { type: "button" }
-      },
-      [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SALVA")]
-    )
   }
 ]
 render._withStripped = true
@@ -48730,35 +48751,24 @@ var render = function() {
       "div",
       { staticClass: "d-grid gap-2 d-md-flex justify-content-md-end mb-2" },
       [
-        _vm.toUpdate
-          ? _c(
-              "button",
-              {
-                staticClass: "btn btn-warning rounded-pill mr-2",
-                attrs: { type: "button" }
-              },
-              [_c("i", { staticClass: "fas fa-upload" }), _vm._v(" UPDATE")]
-            )
-          : _vm._e(),
-        _vm._v(" "),
         _c(
-          "a",
+          "button",
           {
-            staticClass: "btn btn-danger rounded-pill mr-2",
-            attrs: {
-              href: "/invoice/pdf/" + _vm.$route.params.id,
-              target: "_blank"
-            }
+            staticClass: "btn btn-warning rounded-pill mr-2",
+            attrs: { type: "button" },
+            on: { click: _vm.updateInvoice }
           },
-          [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" PDF")]
+          [_c("i", { staticClass: "fas fa-upload" }), _vm._v(" UPDATE")]
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._m(1)
       ]
     ),
     _vm._v(" "),
     _c("div", { staticClass: "card" }, [
-      _vm._m(1),
+      _vm._m(2),
       _vm._v(" "),
       _c(
         "div",
@@ -48888,7 +48898,7 @@ var render = function() {
           _c("div", { staticClass: "col-lg-12 mt-3 col-sm-12" }, [
             _c("div", { staticClass: "table-responsive row" }, [
               _c("table", { staticClass: "table table-striped" }, [
-                _vm._m(2),
+                _vm._m(3),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -48991,7 +49001,70 @@ var render = function() {
                                 )
                               }
                             }
-                          })
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "text-center backg-c pt-1 rounded-lg text-white"
+                            },
+                            [
+                              _c("label", [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: invoiceItem.fixed,
+                                      expression: "invoiceItem.fixed"
+                                    }
+                                  ],
+                                  staticClass: "form-check-input",
+                                  attrs: { type: "checkbox" },
+                                  domProps: {
+                                    checked: Array.isArray(invoiceItem.fixed)
+                                      ? _vm._i(invoiceItem.fixed, null) > -1
+                                      : invoiceItem.fixed
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.updateQty(index)
+                                    },
+                                    change: function($event) {
+                                      var $$a = invoiceItem.fixed,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = null,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            _vm.$set(
+                                              invoiceItem,
+                                              "fixed",
+                                              $$a.concat([$$v])
+                                            )
+                                        } else {
+                                          $$i > -1 &&
+                                            _vm.$set(
+                                              invoiceItem,
+                                              "fixed",
+                                              $$a
+                                                .slice(0, $$i)
+                                                .concat($$a.slice($$i + 1))
+                                            )
+                                        }
+                                      } else {
+                                        _vm.$set(invoiceItem, "fixed", $$c)
+                                      }
+                                    }
+                                  }
+                                }),
+                                _vm._v(" Forfait")
+                              ])
+                            ]
+                          )
                         ]),
                         _vm._v(" "),
                         _c(
@@ -49001,32 +49074,34 @@ var render = function() {
                             attrs: { scope: "row" }
                           },
                           [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: invoiceItem.quantity,
-                                  expression: "invoiceItem.quantity"
-                                }
-                              ],
-                              staticClass:
-                                "form-control col-md-6 m-auto item-input-c",
-                              attrs: { type: "number", placeholder: "1" },
-                              domProps: { value: invoiceItem.quantity },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                            !invoiceItem.fixed
+                              ? _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: invoiceItem.quantity,
+                                      expression: "invoiceItem.quantity"
+                                    }
+                                  ],
+                                  staticClass:
+                                    "form-control col-md-6 m-auto item-input-c",
+                                  attrs: { type: "number", placeholder: "1" },
+                                  domProps: { value: invoiceItem.quantity },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        invoiceItem,
+                                        "quantity",
+                                        $event.target.value
+                                      )
+                                    }
                                   }
-                                  _vm.$set(
-                                    invoiceItem,
-                                    "quantity",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
+                                })
+                              : _vm._e()
                           ]
                         ),
                         _vm._v(" "),
@@ -49064,9 +49139,9 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-success rounded-pill mt-3",
-                        attrs: { "data-html2canvas-ignore": "true" }
+                        on: { click: _vm.addRow }
                       },
-                      [_vm._v(" + Add Row")]
+                      [_vm._v(" + Aggiungi Prodotto")]
                     )
                   ],
                   2
@@ -49137,7 +49212,7 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "row" }, [
-                  _vm._m(3),
+                  _vm._m(4),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-2" }, [
                     _c("h4", [
@@ -49175,14 +49250,14 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(4)
+          _vm._m(5)
         ]
       ),
       _vm._v(" "),
-      _vm._m(5)
+      _vm._m(6)
     ]),
     _vm._v(" "),
-    _vm._m(6)
+    _vm._m(7)
   ])
 }
 var staticRenderFns = [
@@ -49193,10 +49268,20 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-secondary rounded-pill",
+        staticClass: "btn btn-primary rounded-pill mr-2",
         attrs: { type: "button" }
       },
-      [_c("i", { staticClass: "fas fa-undo" }), _vm._v(" RESET")]
+      [_c("i", { staticClass: "fas fa-eye" }), _vm._v(" VISTA")]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-danger rounded-pill", attrs: { type: "button" } },
+      [_c("i", { staticClass: "fas fa-trash" }), _vm._v(" DELETE")]
     )
   },
   function() {
@@ -49608,55 +49693,63 @@ var render = function() {
                 _c(
                   "tbody",
                   _vm._l(_vm.invoiceItems, function(invoiceItem, index) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [
+                    return _c(
+                      "tr",
+                      { key: index, staticClass: "text-secondary" },
+                      [
+                        _c("td", [
+                          _c(
+                            "h6",
+                            { staticClass: "font-weight-bold text-secondary" },
+                            [_vm._v(_vm._s(invoiceItem.title))]
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "text-secondary" }, [
+                            _vm._v(_vm._s(invoiceItem.description))
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          invoiceItem.fixed == 0
+                            ? _c("b", { staticClass: "float-left col-md-6" }, [
+                                _vm._v(_vm._s(_vm.currency))
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          invoiceItem.fixed == 0
+                            ? _c("span", [_vm._v(_vm._s(invoiceItem.price))])
+                            : _vm._e()
+                        ]),
+                        _vm._v(" "),
                         _c(
-                          "h6",
-                          { staticClass: "font-weight-bold text-secondary" },
-                          [_vm._v(_vm._s(invoiceItem.title))]
+                          "td",
+                          {
+                            staticClass: "text-center",
+                            attrs: { scope: "row" }
+                          },
+                          [
+                            invoiceItem.fixed == 0
+                              ? _c("span", [
+                                  _vm._v(_vm._s(invoiceItem.quantity))
+                                ])
+                              : _c("span", [_vm._v("forfait")])
+                          ]
                         ),
                         _vm._v(" "),
-                        _c("p", { staticClass: "text-secondary" }, [
-                          _vm._v(_vm._s(invoiceItem.description))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "text-right" }, [
-                        _c("b", { staticClass: "float-left col-md-6" }, [
-                          _vm._v(_vm._s(_vm.currency))
-                        ]),
-                        _vm._v(
-                          "\n                                 " +
-                            _vm._s(invoiceItem.price) +
-                            "\n                                 "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        { staticClass: "text-center", attrs: { scope: "row" } },
-                        [
+                        _c("td", { staticClass: "text-right mr-2" }, [
+                          _c("b", { staticClass: "float-left" }, [
+                            _vm._v(_vm._s(_vm.currency))
+                          ]),
                           _vm._v(
-                            "\n                                     " +
-                              _vm._s(invoiceItem.quantity) +
-                              "\n                                 "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "text-right mr-2" }, [
-                        _c("b", { staticClass: "float-left" }, [
-                          _vm._v(_vm._s(_vm.currency))
-                        ]),
-                        _vm._v(
-                          _vm._s(
-                            _vm.decimalDigits(
-                              invoiceItem.quantity * invoiceItem.price
+                            _vm._s(
+                              _vm.decimalDigits(
+                                invoiceItem.quantity * invoiceItem.price
+                              )
                             )
                           )
-                        )
-                      ])
-                    ])
+                        ])
+                      ]
+                    )
                   }),
                   0
                 )

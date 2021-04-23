@@ -63,7 +63,7 @@
                                     <td class="text-right mr-2"><b class="float-left">{{currency}}</b>{{ decimalDigits(invoiceItem.quantity*invoiceItem.price) }}</td>
                                     <button class="btn btn-danger btn-sm rounded-circle mt-3 mr-2" v-on:click="deleteItem(index)" data-html2canvas-ignore="true">X</button>
                                 </tr>
-                                <button class="btn btn-success rounded-pill mt-3" @click="addRow" data-html2canvas-ignore="true"> + Aggiungi Prodotto</button>
+                                <button class="btn btn-success rounded-pill mt-3" @click="addRow"> + Aggiungi Prodotto</button>
                             </tbody>
                         </table>
                     </div>
@@ -110,8 +110,8 @@
             </footer>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-5">
-            <button class="btn btn-success rounded-pill mr-2" type="button"><i class="fas fa-save"></i> SALVA</button>
-            <button class="btn btn-danger rounded-pill mr-2" type="button" @click="downloadinv"><i class="fas fa-file-pdf"></i> SCARICA PDF</button>
+            <button class="btn btn-success rounded-pill mr-2" type="button" @click="saveInvoice"><i class="fas fa-save"></i> SALVA</button>
+            <button class="btn btn-danger rounded-pill mr-2" type="button" @click="saveInvoicePDF"><i class="fas fa-file-pdf"></i> SALVA & SCARICA PDF</button>
             <button class="btn btn-secondary rounded-pill" type="button" @click="reset"><i class="fas fa-undo"></i> RESET</button>
         </div>
     </div>

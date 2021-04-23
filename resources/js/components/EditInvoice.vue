@@ -1,9 +1,9 @@
 <template>
    <div class="container">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-            <button class="btn btn-warning rounded-pill mr-2" type="button" v-if="toUpdate"><i class="fas fa-upload"></i> UPDATE</button>
-            <a class="btn btn-danger rounded-pill mr-2" :href="'/invoice/pdf/'+$route.params.id" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
-            <button class="btn btn-secondary rounded-pill" type="button" ><i class="fas fa-undo"></i> RESET</button>
+            <button class="btn btn-warning rounded-pill mr-2" type="button" @click="updateInvoice"><i class="fas fa-upload"></i> UPDATE</button>
+            <button class="btn btn-primary rounded-pill mr-2" type="button" ><i class="fas fa-eye"></i> VISTA</button>
+            <button class="btn btn-danger rounded-pill" type="button" ><i class="fas fa-trash"></i> DELETE</button>
         </div>
         <div class="card">
             <div class="card-header fill">
@@ -54,14 +54,15 @@
                                     </td>
                                     <td class="text-right"><b class="float-left col-md-6">{{currency}}</b>
                                     <input type="number" step="0.1" class="form-control col-md-6 text-right item-input-c" placeholder="100" v-model="invoiceItem.price">
+                                    <div  class="text-center backg-c pt-1 rounded-lg text-white"><label><input type="checkbox" class="form-check-input" v-model="invoiceItem.fixed" v-on:click="updateQty(index)"> Forfait</label></div>
                                     </td>
                                     <td scope="row" class="text-center">
-                                        <input type="number" class="form-control col-md-6 m-auto item-input-c" placeholder="1" v-model="invoiceItem.quantity">
+                                        <input type="number" class="form-control col-md-6 m-auto item-input-c" placeholder="1" v-model="invoiceItem.quantity" v-if="!invoiceItem.fixed">
                                     </td>
                                     <td class="text-right mr-2"><b class="float-left">{{currency}}</b>{{ decimalDigits(invoiceItem.quantity*invoiceItem.price) }}</td>
                                     <button class="btn btn-danger btn-sm rounded-circle mt-3 mr-2" v-on:click="deleteItem(index)" data-html2canvas-ignore="true">X</button>
                                 </tr>
-                                <button class="btn btn-success rounded-pill mt-3"  data-html2canvas-ignore="true"> + Add Row</button>
+                                <button class="btn btn-success rounded-pill mt-3" @click="addRow"> + Aggiungi Prodotto</button>
                             </tbody>
                         </table>
                     </div>
@@ -132,10 +133,11 @@
                 toUpdate: false,
                 invoiceItems: [
                     {
-                        id: "",
+                       
                         title: "",
                         description: "",
                         quantity: 1,
+                        fixed: false,
                         price: 0
                     }
                 ]
@@ -145,7 +147,7 @@
             this.axios
                 .get(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
                 .then((res) => {
-                    console.log(res);
+                    console.log(res.data);
                     this.invoice = res.data.invoice;
                     this.data = res.data.invoice.date;
                     this.numeroFattura = res.data.invoice.reference_number;
@@ -156,6 +158,7 @@
                    this.invoiceItems = res.data.items;
                 });
         },
+        
         computed: {
             subTotal() {
                 var total = this.invoiceItems.reduce(function(accumulator, invoiceItem) {
@@ -178,15 +181,43 @@
 
         },
         methods: {
-            updateProduct() {
+            updateInvoice() {
                 this.axios
-                    .patch(`http://localhost:8000/api/invoices/${this.$route.params.id}`, this.invoice)
+                    .patch(`http://localhost:8000/api/invoices/${this.$route.params.id}`,
+                    {
+                        data: this.data,
+                        company: this.company,
+                        customer: this.customer,
+                        reference_number: this.numeroFattura,
+                        currency: this.currency,
+                        tax: this.taxRate,
+                        subtotal: this.subtotal,
+                        total: this.total,
+                        invoiceItems: this.invoiceItems
+                    })
                     .then((res) => {
-                        this.$router.push({ name: 'home' });
+                        console.log(res);
+                        //this.$router.push({ name: 'home' });
                     });
             },
             decimalDigits(value) {
                 return value.toFixed(2);
+            },
+            addRow(){
+                this.invoiceItems.push({
+                        id: "",
+                        title: "",
+                        description: "",
+                        quantity: 1,
+                        fixed: false,
+                        price: ""
+                    });
+            },
+            deleteItem(index) {
+                this.invoiceItems.splice(index, 1)
+            },
+            updateQty(index){
+                this.invoiceItems[index].quantity = 1;
             },
         }
     }

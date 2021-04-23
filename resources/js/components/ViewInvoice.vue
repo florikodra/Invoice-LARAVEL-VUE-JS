@@ -47,17 +47,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(invoiceItem, index) in invoiceItems" :key="index">
+                                <tr v-for="(invoiceItem, index) in invoiceItems" :key="index" class="text-secondary">
                                     <td>
                                         <h6 class="font-weight-bold text-secondary">{{invoiceItem.title}}</h6>
                                         <p class="text-secondary">{{invoiceItem.description}}</p>
                                        
                                     </td>
-                                    <td class="text-right"><b class="float-left col-md-6">{{currency}}</b>
-                                    {{invoiceItem.price}}
+                                    <td class="text-right"><b class="float-left col-md-6" v-if="invoiceItem.fixed==0">{{currency}}</b>
+                                    <span v-if="invoiceItem.fixed==0">{{invoiceItem.price}}</span>
                                     </td>
                                     <td scope="row" class="text-center">
-                                        {{invoiceItem.quantity}}
+                                        <span v-if="invoiceItem.fixed==0">{{invoiceItem.quantity}}</span>
+                                        <span v-else>forfait</span>
                                     </td>
                                     <td class="text-right mr-2"><b class="float-left">{{currency}}</b>{{ decimalDigits(invoiceItem.quantity*invoiceItem.price) }}</td>
                                 </tr>

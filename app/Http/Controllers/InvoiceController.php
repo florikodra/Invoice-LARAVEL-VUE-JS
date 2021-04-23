@@ -48,9 +48,6 @@ class InvoiceController extends Controller
         $pdf = PDF::loadView('pdf',compact('invoice','items'));
         return $pdf->stream('invoice.pdf');
 
-       /*  echo "<pre>";
-        print_r($items);
-        echo "</pre>"; */
     }
 
     /**
@@ -119,8 +116,7 @@ class InvoiceController extends Controller
      */
     public function edit()
     {
-        //
-        echo "test";
+        
 
     }
 
@@ -133,7 +129,58 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $invoice = Invoice::find($id);
+        $invoice->date = $request->data;
+        $invoice->reference_number = $request->reference_number;
+        $invoice->reference_person = $request->customer;
+        $invoice->company = $request->company;
+        $invoice->currency = $request->currency;
+        $invoice->tax = $request->tax;
+        $invoice->subtotal = $request->subtotal;
+        $invoice->total = $request->total;
+        $invoice->update();
+
+
+        $invoiceItemsToUpdate = [];
+        $invoiceItemsToInsert = [];
+
+        $items= $request->get('invoiceItems');
+        foreach ($items as $item) {
+
+            if(is_null($item['id'])){
+
+                $invoiceItemsToInsert [] = [
+                'invoice_id' => $id,
+                'title' => $item['title'],
+                'description' => $item['description'],
+                'quantity' => $item['quantity'],
+                'fixed' => $item['fixed'],
+                'price' => $item['price'],
+                'total' => $item['price']*$item['quantity'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                ];
+
+            }else{
+                $invtoupdate = InvoiceItem::find($item['id']);
+                $invtoupdate->update(array(
+                    'title' => $item['title'],
+                    'description' => $item['description'],
+                    'quantity' => $item['quantity'],
+                    'fixed' => $item['fixed'],
+                    'price' => $item['price'],
+                    'total' => $item['price']*$item['quantity'],
+                ));
+
+            }
+            
+        }
+
+        InvoiceItem::insert($invoiceItemsToInsert);
+        InvoiceItem::update($invoiceItemsToUpdate);
+
+
+
     }
 
     /**
@@ -147,5 +194,8 @@ class InvoiceController extends Controller
         $invoice = Invoice::findOrFail($id);
         $invoice->items()->delete();
         $invoice->delete();
+
+        return response()->json('Invoice deleted!');
+
     }
 }
