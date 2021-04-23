@@ -7,6 +7,13 @@
              **/
             @page {
                 margin: 0cm 0cm;
+                margin-top: 2cm;
+                margin-bottom: 2cm;
+            }
+            @page:remaining{
+                .header{
+                    display: none!important;
+                }
             }
           
             
@@ -20,24 +27,25 @@
 
             /** Define the header rules **/
             .header {
-                position: fixed;
-                top: 0cm;
+                position: absolute;
+                top: -2cm;
                 left: 0cm;
                 right: 0cm;
                 height: 3cm;
-                margin-bottom: 4cm;
+                z-index: 4;
+                /* margin-bottom: 4cm; */
             }
 
             /** Define the footer rules **/
             footer {
                 position: fixed; 
-                bottom: 0cm; 
+                bottom: -2cm; 
                 left: 0cm; 
                 right: 0cm;
                 height: 2cm;
             }
             .container{
-                margin-top: 4cm;  
+                margin-top: 2cm;  
             }
             .backg-c{
                 background-color: #1aafff;
@@ -65,11 +73,12 @@
         <main>
             <div class="container" >
                 <div class="row mb-5 mt-5">
-                    <div class="col-md-4 text-secondary">
-                        {{$invoice->company}}
+                    <div class="col-md-4 text-secondary"><p>
+                        {!! nl2br(e($invoice->company)) !!}
+                        </p>
                     </div>
                     <div class="col-md-4 text-right float-right text-secondary">
-                        {{$invoice->reference_person}}
+                        {!! nl2br(e($invoice->reference_person)) !!}
                     </div>
                 </div>
                 <h2 class="text-secondary mb-3 font-weight-bold">Fattura <?php $PAGE_NUM ?></h2>
@@ -96,12 +105,16 @@
                             </thead>
                             <tbody>
                                 @foreach ($items as $item)
-                                    <tr>
+                                    <tr style="font-size: 12px">
                                         <td class="text-secondary"><b>{{$item->title}}</b><br><small>{{$item->description}}</small></td>
-                                        <td class="text-right text-secondary"><b class="float-left">{{$invoice->currency}}</b> {{$item->price}}</td>
+                                        <td class="text-right text-secondary">
+                                            @if(!$item->fixed)
+                                            <b class="float-left">{{$invoice->currency}}</b> {{$item->price}}
+                                            @endif
+                                        </td>
                                         <td class="text-center text-secondary">
                                         @if($item->fixed)
-                                            fisso
+                                            forfait
                                         @else
                                             {{$item->quantity}}
                                         @endif
@@ -133,11 +146,11 @@
                 
                 
                 <div class="col-md-4 backg-c text-white float-right under-fattura">
-                    <div class="col-md-12 pt-2 ">
-                                <h6>IVA ({{$invoice->tax}}%) {{$invoice->currency}} <b class="float-right">{{number_format($invoice->total-$invoice->subtotal,2)}}</b></h6>
+                    <div class="col-md-12 pt-2 text-center">
+                                <h6>IVA ({{$invoice->tax}}%) {{$invoice->currency}} <b>{{number_format($invoice->total-$invoice->subtotal,2)}}</b></h6>
                         </div>
-                    <div class="col-md-12">
-                                <h4>Totale {{$invoice->currency}} <b class="float-right">{{$invoice->total}}</b></h4>
+                    <div class="col-md-12 text-center">
+                                <h4>Totale {{$invoice->currency}} <b>{{$invoice->total}}</b></h4>
                         </div>
                 </div>
            

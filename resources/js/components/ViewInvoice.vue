@@ -24,13 +24,13 @@
                     <div class="row">
                         <div class="col">
                             <label>Data</label>
-                            <!-- <h5>{{ this.data }}</h5> -->
-                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="data">
+                            <h5>{{ data }}</h5>
+                           <!--  <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="data"> -->
                         </div>
                         <div class="col">
                             <label>Numero fattura</label>
-                            <!-- <h5>{{ this.numeroFattura }}</h5> -->
-                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="numeroFattura">
+                            <h5>{{ numeroFattura }}</h5>
+                            <!-- <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="numeroFattura"> -->
                         </div>
                     </div>
                 </div>
@@ -48,20 +48,19 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(invoiceItem, index) in invoiceItems" :key="index">
-                                    <td> <input type="text" class="form-control mb-1 item-input-c font-weight-bold" placeholder="Nome del prodotto" v-model="invoiceItem.title">
-                                        <textarea name="" class="form-control item-input-c" rows="2" placeholder="Descrizione" v-model="invoiceItem.description"></textarea>
+                                    <td>
+                                        <h6 class="font-weight-bold text-secondary">{{invoiceItem.title}}</h6>
+                                        <p class="text-secondary">{{invoiceItem.description}}</p>
                                        
                                     </td>
                                     <td class="text-right"><b class="float-left col-md-6">{{currency}}</b>
-                                    <input type="number" step="0.1" class="form-control col-md-6 text-right item-input-c" placeholder="100" v-model="invoiceItem.price">
+                                    {{invoiceItem.price}}
                                     </td>
                                     <td scope="row" class="text-center">
-                                        <input type="number" class="form-control col-md-6 m-auto item-input-c" placeholder="1" v-model="invoiceItem.quantity">
+                                        {{invoiceItem.quantity}}
                                     </td>
                                     <td class="text-right mr-2"><b class="float-left">{{currency}}</b>{{ decimalDigits(invoiceItem.quantity*invoiceItem.price) }}</td>
-                                    <button class="btn btn-danger btn-sm rounded-circle mt-3 mr-2" v-on:click="deleteItem(index)" data-html2canvas-ignore="true">X</button>
                                 </tr>
-                                <button class="btn btn-success rounded-pill mt-3"  data-html2canvas-ignore="true"> + Add Row</button>
                             </tbody>
                         </table>
                     </div>
@@ -69,13 +68,13 @@
                 <div class="row justify-content-end pr-4">
                     <div class="col-lg-4 col-sm-12 col-md-4 pl-2 pr-2 text-lg-center text-sm-center">
                         <div class="row">
-                            <div class="row col-7 mb-2">
-                                <h5 class="mt-2">IVA</h5>  &nbsp;<input type="number" step=".1" v-model="taxRate" class="form-control col-8 item-input-c">&nbsp;<h5 class="mt-2">%</h5>
+                            <div class="row col-3 mb-2">
+                                <h5 class="mt-2">IVA</h5>
                             </div>
-                            <div class="col-2">
-                                <h5 class="mt-2">{{taxRate}}</h5>
+                            <div class="col-4">
+                                <h5 class="mt-2">{{taxRate}}%</h5>
                             </div>
-                            <div class="col-3">
+                            <div class="col-5">
                                 <h5 class="mt-2">{{decimalDigits(taxTotal)}}</h5>
                             </div>
                         </div>
@@ -85,13 +84,13 @@
                     <div class="col-lg-5 col-sm-12 col-md-4 backg-c text-white rounded-lg pt-3 pb-2 pl-2 pr-2 text-lg-center text-sm-center">
                         <div class="row">
                             <div class="col-4">
-                                <h4 class="mt-2">Totale</h4>
+                                <h4>Totale</h4>
                             </div>
                             <div class="col-2">
-                                <h4><input type="text" v-model="currency" class="form-control input-c font-weight-bold"></h4>
+                                <h4>{{currency}}</h4>
                             </div>
                             <div class="col-6">
-                                <h4 class="mt-2">{{decimalDigits(grandTotal)}}</h4>
+                                <h4>{{decimalDigits(grandTotal)}}</h4>
                             </div>
                         </div>
                     </div>
