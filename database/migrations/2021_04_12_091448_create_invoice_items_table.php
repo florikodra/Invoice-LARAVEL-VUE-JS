@@ -22,7 +22,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->boolean('fixed')->nullable()->default(false);
 
             $table->decimal('price', 5, 2)->nullable();
-            $table->decimal('total', 5, 2)->nullable();
+            $table->string('total')->nullable();
             $table->timestamps();
         });
     }

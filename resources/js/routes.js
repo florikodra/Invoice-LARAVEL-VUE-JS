@@ -25,10 +25,5 @@ export const routes = [
         path: '/edit/:id',
         component: EditInvoice
     },
-    /* {
-        name: 'view',
-        path: '/view/:id',
-        component: ViewInvoice
-    } */
 
 ];

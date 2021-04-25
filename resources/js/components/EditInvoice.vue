@@ -1,9 +1,9 @@
 <template>
    <div class="container">
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-            <button class="btn btn-warning rounded-pill mr-2" type="button" @click="updateInvoice"><i class="fas fa-upload"></i> UPDATE</button>
-            <button class="btn btn-primary rounded-pill mr-2" type="button" ><i class="fas fa-eye"></i> VISTA</button>
-            <button class="btn btn-danger rounded-pill" type="button" ><i class="fas fa-trash"></i> DELETE</button>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 p-2">
+            <button class="btn btn-warning rounded-pill mr-2" type="button" @click="updateInvoice"><i class="fas fa-upload"></i> MODIFICA</button>
+            <router-link :to="{name: 'view', params: { id: $route.params.id }}" class="btn btn-primary rounded-pill mr-2" type="button" ><i class="fas fa-eye"></i> VISTA</router-link>
+            <button class="btn btn-danger rounded-pill" type="button" @click="deleteInvoice" ><i class="fas fa-trash"></i> ELIMINA</button>
         </div>
         <div class="card">
             <div class="card-header fill">
@@ -25,12 +25,12 @@
                         <div class="col">
                             <label>Data</label>
                             <!-- <h5>{{ this.data }}</h5> -->
-                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="data">
+                            <input type="text" class="form-control input-c font-weight-bold" v-model="data">
                         </div>
                         <div class="col">
                             <label>Numero fattura</label>
                             <!-- <h5>{{ this.numeroFattura }}</h5> -->
-                            <input type="text" name="" id="" class="form-control input-c font-weight-bold" v-model="numeroFattura">
+                            <input type="text" class="form-control input-c font-weight-bold" v-model="numeroFattura">
                         </div>
                     </div>
                 </div>
@@ -54,13 +54,13 @@
                                     </td>
                                     <td class="text-right"><b class="float-left col-md-6">{{currency}}</b>
                                     <input type="number" step="0.1" class="form-control col-md-6 text-right item-input-c" placeholder="100" v-model="invoiceItem.price">
-                                    <div  class="text-center backg-c pt-1 rounded-lg text-white"><label><input type="checkbox" class="form-check-input" v-model="invoiceItem.fixed" v-on:click="updateQty(index)"> Forfait</label></div>
+                                    <div  class="text-center backg-c pt-1 rounded-lg text-white"><label class="custom-check"><input type="checkbox" class="form-check-input" v-model="invoiceItem.fixed" v-on:click="updateQty(index)"> Forfait</label></div>
                                     </td>
                                     <td scope="row" class="text-center">
                                         <input type="number" class="form-control col-md-6 m-auto item-input-c" placeholder="1" v-model="invoiceItem.quantity" v-if="!invoiceItem.fixed">
                                     </td>
                                     <td class="text-right mr-2"><b class="float-left">{{currency}}</b>{{ decimalDigits(invoiceItem.quantity*invoiceItem.price) }}</td>
-                                    <button class="btn btn-danger btn-sm rounded-circle mt-3 mr-2" v-on:click="deleteItem(index)" data-html2canvas-ignore="true">X</button>
+                                    <button class="btn btn-danger btn-sm rounded-circle mt-3 mr-2" v-on:click="deleteItem(index, invoiceItem.id)" data-html2canvas-ignore="true">X</button>
                                 </tr>
                                 <button class="btn btn-success rounded-pill mt-3" @click="addRow"> + Aggiungi Prodotto</button>
                             </tbody>
@@ -131,6 +131,7 @@
                 taxRate: "",
                 total: 0,
                 toUpdate: false,
+                itemsToDelete: [],
                 invoiceItems: [
                     {
                        
@@ -147,7 +148,6 @@
             this.axios
                 .get(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
                 .then((res) => {
-                    console.log(res.data);
                     this.invoice = res.data.invoice;
                     this.data = res.data.invoice.date;
                     this.numeroFattura = res.data.invoice.reference_number;
@@ -193,11 +193,14 @@
                         tax: this.taxRate,
                         subtotal: this.subtotal,
                         total: this.total,
+                        itemsToDelete: this.itemsToDelete,
                         invoiceItems: this.invoiceItems
                     })
-                    .then((res) => {
-                        console.log(res);
-                        //this.$router.push({ name: 'home' });
+                    .then((response) => {
+                        this.invoiceItems = response.data.items;
+                    }, (error) => {
+                        alert("Error, aggiorna e riprova!")
+                        console.log(error);
                     });
             },
             decimalDigits(value) {
@@ -213,12 +216,28 @@
                         price: ""
                     });
             },
-            deleteItem(index) {
-                this.invoiceItems.splice(index, 1)
+            deleteItem(index, id) {
+                this.invoiceItems.splice(index, 1);
+                if(id){
+                    this.itemsToDelete.push(id);
+                }
+                
             },
             updateQty(index){
                 this.invoiceItems[index].quantity = 1;
             },
+            deleteInvoice(){
+                if(confirm("Vuoi elimina fatture?")){
+                    this.axios
+                        .delete(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
+                        .then((response) => {
+                            this.$router.push({name: 'invoices'});
+                        }, (error) => {
+                            alert("Error, aggiorna e riprova!")
+                            console.log(error);
+                        });
+                }
+            }
         }
     }
 </script>

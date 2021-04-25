@@ -28,7 +28,7 @@
                             <td>{{ invoice.total }}</td>
                             <td>{{ formatDate(invoice.created_at) }}</td>
                             <td>{{ formatDate(invoice.updated_at) }}</td>
-                            <td>
+                            <td class="d-block custom-td">
                                 <router-link :to="{name: 'view', params: { id: invoice.id }}" class="btn btn-light rounded-pill"><i class="fas fa-eye"></i></router-link>
                                 <router-link :to="{name: 'edit', params: { id: invoice.id }}" class="btn btn-warning rounded-pill"><i class="fas fa-pencil-alt"></i></router-link>
                                 <button class="btn btn-outline-danger rounded-pill" @click="deleteInvoice(invoice.id)"><i class="fas fa-trash"></i></button> 
@@ -40,6 +40,9 @@
                 </div>
             </div>
         </div>
+        
+        
+
     </div>
 </template>
  

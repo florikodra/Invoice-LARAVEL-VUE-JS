@@ -54,7 +54,7 @@
                                     </td>
                                     <td class="text-right"><b class="float-left col-md-6">{{currency}}</b>
                                     <input type="number" step="0.1" class="form-control col-md-6 text-right item-input-c" placeholder="100" v-model="invoiceItem.price">
-                                    <div  class="text-center backg-c pt-1 rounded-lg text-white"><label><input type="checkbox" class="form-check-input" v-model="invoiceItem.fixed" v-on:click="updateQty(index)"> Forfait</label></div>
+                                    <div  class="text-center backg-c pt-1 rounded-lg text-white"><label class="custom-check"><input type="checkbox" class="form-check-input " v-model="invoiceItem.fixed" v-on:click="updateQty(index)"> Forfait</label></div>
                                     </td>
                                     <td scope="row" class="text-center">
                                         
@@ -71,29 +71,26 @@
                 <div class="row justify-content-end pr-4">
                     <div class="col-lg-4 col-sm-12 col-md-4 pl-2 pr-2 text-lg-center text-sm-center">
                         <div class="row">
-                            <div class="row col-7 mb-2">
-                                <h5 class="mt-2">IVA</h5>  &nbsp;<input type="number" step=".1" v-model="taxRate" class="form-control col-8 item-input-c">&nbsp;<h5 class="mt-2">%</h5>
+                            <div class="row col-8 mb-2 ">
+                                <h5 class="mt-2">IVA %</h5>  &nbsp;<input type="number" step=".1" v-model="taxRate" class="form-control col-6 item-input-c">
                             </div>
-                            <div class="col-2">
-                                <h5 class="mt-2">{{taxRate}}</h5>
-                            </div>
-                            <div class="col-3">
+                            <div class="col-4">
                                 <h5 class="mt-2">{{decimalDigits(taxTotal)}}</h5>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-end mr-4">
+                <div class="row justify-content-end mr-md-4">
                     <div class="col-lg-5 col-sm-12 col-md-4 backg-c text-white rounded-lg pt-3 pb-2 pl-2 pr-2 text-lg-center text-sm-center">
                         <div class="row">
-                            <div class="col-4">
-                                <h4 class="mt-2">Totale</h4>
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <h4 class="mt-2 text-center">Totale</h4>
                             </div>
-                            <div class="col-2">
-                                <h4><input type="text" v-model="currency" class="form-control input-c font-weight-bold"></h4>
+                            <div class="col-lg-2 col-md-2 col-sm-4">
+                                <h4><input type="text" v-model="currency" class="form-control input-c font-weight-bold  text-center"></h4>
                             </div>
-                            <div class="col-6">
-                                <h4 class="mt-2">{{decimalDigits(grandTotal)}}</h4>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-sm-4">
+                                <h4 class="mt-2  text-center">{{decimalDigits(grandTotal)}}</h4>
                             </div>
                         </div>
                     </div>
@@ -118,7 +115,6 @@
 </template>
  
 <script>
-import html2pdf from 'html2pdf.js';
 
 const today = new Date();
 const year = today.getFullYear();
@@ -148,13 +144,7 @@ const day = `${today.getDate()}`.padStart(2, "0");
                 ]
             }
         },
-        created() {
-            /* this.axios
-                .get(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
-                .then((res) => {
-                    this.product = res.data;
-                }); */
-        },
+       
         computed: {
             subTotal() {
                 var total = this.invoiceItems.reduce(function(accumulator, invoiceItem) {
@@ -267,20 +257,10 @@ const day = `${today.getDate()}`.padStart(2, "0");
             decimalDigits(value) {
                 return value.toFixed(2);
             },
-            convert(){
-                html2pdf(this.$refs.document, {
-                    margin: 2,
-                    //width: 1000,
-					filename: this.numeroFattura+'.pdf',
-					image: { type: 'pdf'}, 
-                    html2canvas: {  },
-					jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-				})
-            },
+          
             getFormattedTime() {
                 var today = new Date();
                 var y = today.getFullYear();
-                // JavaScript months are 0-based.
                 var m = today.getMonth() + 1;
                 var d = today.getDate();
                 var h = today.getHours();

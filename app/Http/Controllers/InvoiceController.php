@@ -149,6 +149,8 @@ class InvoiceController extends Controller
 
             if(is_null($item['id'])){
 
+                $total = $item['price']*$item['quantity'];
+
                 $invoiceItemsToInsert [] = [
                 'invoice_id' => $id,
                 'title' => $item['title'],
@@ -156,30 +158,34 @@ class InvoiceController extends Controller
                 'quantity' => $item['quantity'],
                 'fixed' => $item['fixed'],
                 'price' => $item['price'],
-                'total' => $item['price']*$item['quantity'],
+                'total' => (double) $total,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 ];
 
             }else{
+                $total = $item['price']*$item['quantity'];
                 $invtoupdate = InvoiceItem::find($item['id']);
-                $invtoupdate->update(array(
-                    'title' => $item['title'],
-                    'description' => $item['description'],
-                    'quantity' => $item['quantity'],
-                    'fixed' => $item['fixed'],
-                    'price' => $item['price'],
-                    'total' => $item['price']*$item['quantity'],
-                ));
+                $invtoupdate->title = $item['title'];
+                $invtoupdate->description = $item['description'];
+                $invtoupdate->quantity = $item['quantity'];
+                $invtoupdate->fixed = $item['fixed'];
+                $invtoupdate->price = $item['price'];
+                $invtoupdate->total = (double) $total;
+                $invtoupdate->update();
 
             }
             
         }
 
         InvoiceItem::insert($invoiceItemsToInsert);
-        InvoiceItem::update($invoiceItemsToUpdate);
+        InvoiceItem::destroy($request->itemsToDelete);
 
-
+        $invoice = Invoice::find($id);
+        return response()->json(array(
+            'invoice' => $invoice,
+            'items' => $invoice->items,
+        ));
 
     }
 

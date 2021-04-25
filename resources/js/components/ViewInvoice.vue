@@ -1,9 +1,10 @@
 <template>
    <div class="container">
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-            <button class="btn btn-warning rounded-pill mr-2" type="button" v-if="toUpdate"><i class="fas fa-upload"></i> UPDATE</button>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2 text-center">
             <a class="btn btn-danger rounded-pill mr-2" :href="'/invoice/pdf/'+$route.params.id" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
-            <button class="btn btn-secondary rounded-pill" type="button" ><i class="fas fa-undo"></i> RESET</button>
+            <router-link :to="{name: 'edit', params: { id: $route.params.id }}" class="btn btn-warning rounded-pill mr-2" type="button" ><i class="fas fa-pencil-alt"></i> MODIFICA</router-link>
+            <button class="btn btn-danger rounded-pill" type="button" @click="deleteInvoice" ><i class="fas fa-trash"></i> ELIMINA</button>
+
         </div>
         <div class="card">
             <div class="card-header fill">
@@ -69,19 +70,19 @@
                 <div class="row justify-content-end pr-4">
                     <div class="col-lg-4 col-sm-12 col-md-4 pl-2 pr-2 text-lg-center text-sm-center">
                         <div class="row">
-                            <div class="row col-3 mb-2">
+                            <div class="col-3 mb-2 col-sm-3">
                                 <h5 class="mt-2">IVA</h5>
                             </div>
-                            <div class="col-4">
+                            <div class="col-4 col-sm-6">
                                 <h5 class="mt-2">{{taxRate}}%</h5>
                             </div>
-                            <div class="col-5">
+                            <div class="col-5 col-sm-3">
                                 <h5 class="mt-2">{{decimalDigits(taxTotal)}}</h5>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-end mr-4">
+                <div class="row justify-content-end mr-lg-4">
                     <div class="col-lg-5 col-sm-12 col-md-4 backg-c text-white rounded-lg pt-3 pb-2 pl-2 pr-2 text-lg-center text-sm-center">
                         <div class="row">
                             <div class="col-4">
@@ -107,10 +108,11 @@
                 <img src="/pdf-footer.jpg" alt="" />
             </div>
         </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-5">
-            <button class="btn btn-success rounded-pill mr-2" type="button"><i class="fas fa-save"></i> SALVA</button>
-            <button class="btn btn-danger rounded-pill mr-2" type="button"><i class="fas fa-file-pdf"></i> SCARICA PDF</button>
-            <button class="btn btn-secondary rounded-pill" type="button" ><i class="fas fa-undo"></i> RESET</button>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-5 text-center">
+            <a class="btn btn-danger rounded-pill mr-2" :href="'/invoice/pdf/'+$route.params.id" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+            <router-link :to="{name: 'edit', params: { id: $route.params.id }}" class="btn btn-warning rounded-pill mr-2" type="button" ><i class="fas fa-pencil-alt"></i> MODIFICA</router-link>
+            <button class="btn btn-danger rounded-pill" type="button" @click="deleteInvoice" ><i class="fas fa-trash"></i> ELIMINA</button>
+
         </div>
     </div>
 </template>
@@ -145,7 +147,6 @@
             this.axios
                 .get(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
                 .then((res) => {
-                    console.log(res);
                     this.invoice = res.data.invoice;
                     this.data = res.data.invoice.date;
                     this.numeroFattura = res.data.invoice.reference_number;
@@ -188,6 +189,18 @@
             decimalDigits(value) {
                 return value.toFixed(2);
             },
+            deleteInvoice(){
+                if(confirm("Vuoi elimina fatture?")){
+                    this.axios
+                        .delete(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
+                        .then((response) => {
+                            this.$router.push({name: 'invoices'});
+                        }, (error) => {
+                            alert("Error, aggiorna e riprova!")
+                            console.log(error);
+                        });
+                }
+            }
         }
     }
 </script>

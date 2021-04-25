@@ -9,6 +9,17 @@
             </div>
         </nav>
         
+        
+
+        <div class="btn-group dropup position-fixed d-none custom-menu">
+        <button type="button" class="btn btn-secondary dropdown-toggle rounded-circle p-3 bg-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-list"></i> 
+        </button>
+        <div class="dropdown-menu">
+           <router-link to="/create" class="dropdown-item"><i class="fas fa-plus"></i> Creare Fattura</router-link>
+           <router-link to="/" class="dropdown-item"><i class="fas fa-list"></i> Tutte Fatture</router-link>
+        </div>
+        </div>
 
         <router-view> </router-view>
         
