@@ -39939,7 +39939,46 @@ var render = function() {
       _vm._m(4)
     ]),
     _vm._v(" "),
-    _vm._m(5)
+    _c(
+      "div",
+      {
+        staticClass: "d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-5"
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-warning rounded-pill mr-2",
+            attrs: { type: "button" },
+            on: { click: _vm.updateInvoice }
+          },
+          [_c("i", { staticClass: "fas fa-upload" }), _vm._v(" MODIFICA")]
+        ),
+        _vm._v(" "),
+        _c(
+          "router-link",
+          {
+            staticClass: "btn btn-primary rounded-pill mr-2",
+            attrs: {
+              to: { name: "view", params: { id: _vm.$route.params.id } },
+              type: "button"
+            }
+          },
+          [_c("i", { staticClass: "fas fa-eye" }), _vm._v(" VISTA")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-danger rounded-pill",
+            attrs: { type: "button" },
+            on: { click: _vm.deleteInvoice }
+          },
+          [_c("i", { staticClass: "fas fa-trash" }), _vm._v(" ELIMINA")]
+        )
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [
@@ -39998,45 +40037,6 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-footer fill" }, [
       _c("img", { attrs: { src: "/pdf-footer.jpg", alt: "" } })
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "d-grid gap-2 d-md-flex justify-content-md-end mt-2 mb-5"
-      },
-      [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success rounded-pill mr-2",
-            attrs: { type: "button" }
-          },
-          [_c("i", { staticClass: "fas fa-save" }), _vm._v(" SALVA")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-danger rounded-pill mr-2",
-            attrs: { type: "button" }
-          },
-          [_c("i", { staticClass: "fas fa-file-pdf" }), _vm._v(" SCARICA PDF")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-secondary rounded-pill",
-            attrs: { type: "button" }
-          },
-          [_c("i", { staticClass: "fas fa-undo" }), _vm._v(" RESET")]
-        )
-      ]
-    )
   }
 ]
 render._withStripped = true
