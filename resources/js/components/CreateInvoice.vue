@@ -128,7 +128,7 @@ const day = `${today.getDate()}`.padStart(2, "0");
                 data: day+"."+month+"."+year,
                 numeroFattura: year+""+month+""+day,
                 currency: "$",
-                company: "Compania:\n",
+                company: "Sede operativa\nVia Cantonale 108\n6802 Rivera\nTel: +41 91 840 1251\nMobile: +41 79 280 35 45\nN. IVA: CHE-283.978.364 MWST",
                 customer: "Cliente:\n",
                 subtotal: 0,
                 taxRate: 7.7,

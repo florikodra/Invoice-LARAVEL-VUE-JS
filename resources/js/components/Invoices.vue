@@ -55,7 +55,7 @@
         },
         created() {
             this.axios
-                .get('http://localhost:8000/api/invoices/')
+                .get('/api/invoices/')
                 .then(response => {
                     this.invoices = response.data;
                 });
@@ -64,7 +64,7 @@
             deleteInvoice(id) { 
                 if(confirm("Vuoi elimina fatture con id : "+id+"?")){
                     this.axios
-                        .delete(`http://localhost:8000/api/invoices/${id}`)
+                        .delete(`/api/invoices/${id}`)
                         .then(response => {
                             let i = this.invoices.map(data => data.id).indexOf(id);
                             this.invoices.splice(i, 1)

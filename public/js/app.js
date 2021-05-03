@@ -2015,7 +2015,7 @@ var day = "".concat(today.getDate()).padStart(2, "0");
       data: day + "." + month + "." + year,
       numeroFattura: year + "" + month + "" + day,
       currency: "$",
-      company: "Compania:\n",
+      company: "Sede operativa\nVia Cantonale 108\n6802 Rivera\nTel: +41 91 840 1251\nMobile: +41 79 280 35 45\nN. IVA: CHE-283.978.364 MWST",
       customer: "Cliente:\n",
       subtotal: 0,
       taxRate: 7.7,
@@ -2320,7 +2320,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.axios.get("http://localhost:8000/api/invoices/".concat(this.$route.params.id)).then(function (res) {
+    this.axios.get("/api/invoices/".concat(this.$route.params.id)).then(function (res) {
       _this.invoice = res.data.invoice;
       _this.data = res.data.invoice.date;
       _this.numeroFattura = res.data.invoice.reference_number;
@@ -2353,7 +2353,7 @@ __webpack_require__.r(__webpack_exports__);
     updateInvoice: function updateInvoice() {
       var _this2 = this;
 
-      this.axios.patch("http://localhost:8000/api/invoices/".concat(this.$route.params.id), {
+      this.axios.patch("/api/invoices/".concat(this.$route.params.id), {
         data: this.data,
         company: this.company,
         customer: this.customer,
@@ -2398,7 +2398,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       if (confirm("Vuoi elimina fatture?")) {
-        this.axios["delete"]("http://localhost:8000/api/invoices/".concat(this.$route.params.id)).then(function (response) {
+        this.axios["delete"]("/api/invoices/".concat(this.$route.params.id)).then(function (response) {
           _this3.$router.push({
             name: 'invoices'
           });
@@ -2481,7 +2481,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.axios.get('http://localhost:8000/api/invoices/').then(function (response) {
+    this.axios.get('/api/invoices/').then(function (response) {
       _this.invoices = response.data;
     });
   },
@@ -2490,7 +2490,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (confirm("Vuoi elimina fatture con id : " + id + "?")) {
-        this.axios["delete"]("http://localhost:8000/api/invoices/".concat(id)).then(function (response) {
+        this.axios["delete"]("/api/invoices/".concat(id)).then(function (response) {
           var i = _this2.invoices.map(function (data) {
             return data.id;
           }).indexOf(id);
@@ -2675,7 +2675,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.axios.get("http://localhost:8000/api/invoices/".concat(this.$route.params.id)).then(function (res) {
+    this.axios.get("/api/invoices/".concat(this.$route.params.id)).then(function (res) {
       _this.invoice = res.data.invoice;
       _this.data = res.data.invoice.date;
       _this.numeroFattura = res.data.invoice.reference_number;
@@ -2708,7 +2708,7 @@ __webpack_require__.r(__webpack_exports__);
     updateProduct: function updateProduct() {
       var _this2 = this;
 
-      this.axios.patch("http://localhost:8000/api/invoices/".concat(this.$route.params.id), this.invoice).then(function (res) {
+      this.axios.patch("/api/invoices/".concat(this.$route.params.id), this.invoice).then(function (res) {
         _this2.$router.push({
           name: 'home'
         });
@@ -2721,7 +2721,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       if (confirm("Vuoi elimina fatture?")) {
-        this.axios["delete"]("http://localhost:8000/api/invoices/".concat(this.$route.params.id)).then(function (response) {
+        this.axios["delete"]("/api/invoices/".concat(this.$route.params.id)).then(function (response) {
           _this3.$router.push({
             name: 'invoices'
           });

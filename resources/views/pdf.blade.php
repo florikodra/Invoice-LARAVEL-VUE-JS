@@ -15,7 +15,10 @@
                     display: none!important;
                 }
             }
-          
+            @font-face{
+                font-family: Verdana!important; 
+              
+            }
             
             /** Define now the real margins of every page in the PDF **/
             body {
@@ -45,7 +48,9 @@
                 height: 2cm;
             }
             .container{
-                margin-top: 2cm;  
+                margin-top: 1cm;  
+                margin-left: 1.5cm!important;
+                margin-right: 1.5cm!important;
             }
             .backg-c{
                 background-color: #1aafff;
@@ -56,10 +61,39 @@
             .color-c{
                 color: #1aafff;
             }
+            .companyclient{
+                font-size: 13px;
+                font-family: Helvetica;
+            }
+            .title{
+                font-size: 34px;
+                font-family: Helvetica;
+                opacity: .8;
+            }
+            .iva-c{
+                font-size: 13px!important;
+                text-align: right!important;
+            }
+            .totale-c{
+                font-size: 18px!important;
+                font-family: Helvetica;
+                text-align: center!important;
+                padding: 0!important;
+            }
+            /* .font-custom{
+                font-family: Helvetica!important;
+            } */
+            /* .leftpad{
+                
+            } */
 
         </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/css/app.css">
+   {{--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/app.css"> --}}
+
+    {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css"> --}}
+    <link rel="stylesheet" type="text/css" href="{{ public_path("/css/bootstrap.css") }}">
+
 </head>
     <body>
         <div class="header">
@@ -72,32 +106,53 @@
 
         <main>
             <div class="container" >
-                <div class="row mb-5 mt-5">
-                    <div class="col-md-4 text-secondary"><p>
+                <div class="row mb-3 mt-5">
+                    <div class="col-md-4 text-secondary companyclient"><p>
                         {!! nl2br(e($invoice->company)) !!}
                         </p>
                     </div>
-                    <div class="col-md-4 text-right float-right text-secondary">
+                    <div class="col-md-4 text-right float-right text-secondary companyclient">
                         {!! nl2br(e($invoice->reference_person)) !!}
                     </div>
                 </div>
-                <h2 class="text-secondary mb-3 font-weight-bold">Fattura <?php $PAGE_NUM ?></h2>
-                <div class="col-md-4 backg-c text-white pt-2 pb-2 pl-4 pr-4 under-fattura">
+                <span class="text-secondary mb-3 font-custom title">Fattura <?php $PAGE_NUM ?></span>
+                <div class="col-md-6 backg-c text-white pt-2 pl-1 pr-2">
                     <div class="col-md-12">
-                        <div>
-                            <b>Data:</b> {{$invoice->date}}
-                        </div>
-                        <div>
-                            <b>Numero fattura:</b> {{$invoice->reference_number}}
-                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>
+                                        Data:
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        Numero fattura:
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        {{$invoice->date}}
+                                    </th>
+                                    <th></th>
+                                    <th>
+                                        {{$invoice->reference_number}}
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                       
                     </div>
                 </div>
                 <div class="col-lg-12 mt-3 col-sm-12">
                     <div class="table-responsive row">
-                        <table class="table table-striped">
-                            <thead class="color-c font-weight-bold">
+                        <table class="table table-striped" style="margin-left:-2cm;">
+                            <thead class="color-c font-weight-bold" style="border-top: 2px solid white;">
                                 <tr>
-                                    <th scope="col" style="width:50%">Descrizione</th>
+                                    <th scope="col" style="width:50%; padding-left: 2cm">Descrizione</th>
                                     <th scope="col" class="text-right">Prezzo</th>
                                     <th scope="col" class="text-center">Quantità</th>
                                     <th scope="col" class="text-right">Totale</th>
@@ -105,8 +160,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($items as $item)
-                                    <tr style="font-size: 12px">
-                                        <td class="text-secondary"><b>{{$item->title}}</b><br><small>{{$item->description}}</small></td>
+                                    <tr style="font-size: 12px; ">
+                                        <td class="text-secondary" style="width:50%; padding-left: 2cm"><b>{{$item->title}}</b><br><small>{{$item->description}}</small></td>
                                         <td class="text-right text-secondary">
                                             @if(!$item->fixed)
                                             <b class="float-left">{{$invoice->currency}}</b> {{$item->price}}
@@ -143,17 +198,60 @@
                         </div>
                     </div>
                 </div> --}}
-                
-                
-                <div class="col-md-4 backg-c text-white float-right under-fattura">
-                    <div class="col-md-12 pt-2 text-center">
-                                <h6>IVA ({{$invoice->tax}}%) {{$invoice->currency}} <b>{{number_format($invoice->total-$invoice->subtotal,2)}}</b></h6>
-                        </div>
-                    <div class="col-md-12 text-center">
-                                <h4>Totale {{$invoice->currency}} <b>{{$invoice->total}}</b></h4>
-                        </div>
+
+                <div class="row" >
+                    <div class="col-md-5 offset-md-7">
+
+                        <table class="table" style="border-top: 2px solid white; padding-top: 0px; margin-top: 0px">
+                            <tr class="text-secondary iva-c" >
+                                <td>
+                                    IVA ({{$invoice->tax}}%)
+                                </td>
+                                <td>
+                                    {{$invoice->currency}}
+                                </td>
+                                <td>
+                                    {{number_format($invoice->total-$invoice->subtotal,2)}}
+                                </td>
+                            </tr>
+                            <tr class="backg-c text-white totale-c">
+                                <th>
+                                    Totale
+                                </th>
+                                <th>
+                                    {{$invoice->currency}}
+                                </th>
+                                <th>
+                                    {{$invoice->total}}
+                                </th>
+                            </tr>
+                        </table>
+                           
+                    </div>
+                    
                 </div>
-           
+                <div class="row">
+                    <table class="col-md-12" height="100%">
+                        <tr>
+                            <td class="companyclient text-secondary" style="width: 61%">
+                                <span><b>Coordinate bancarie</b><br>
+                                    Street 2<br>
+                                    IBAN: USFD4543345g2222<br>
+                                    CORPORATE<br>
+                                    Bank - Street - New York<br>
+                                    55558 New York
+                                   </span>
+                            </td>
+                            <td class="companyclient text-secondary font-weight-bold align-top">
+                                <span>Grazie per la vostra fiducia e cordiali saluti.CORPORATE</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="companyclient text-secondary">Eventuali reclami sono da inoltrare entro 10 giorni dalla data della fattura.</td>
+                        </tr>
+                    </table>
+                   
+                </div>
             </div>
             
             

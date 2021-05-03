@@ -145,7 +145,7 @@
         },
         created() {
             this.axios
-                .get(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
+                .get(`/api/invoices/${this.$route.params.id}`)
                 .then((res) => {
                     this.invoice = res.data.invoice;
                     this.data = res.data.invoice.date;
@@ -181,7 +181,7 @@
         methods: {
             updateProduct() {
                 this.axios
-                    .patch(`http://localhost:8000/api/invoices/${this.$route.params.id}`, this.invoice)
+                    .patch(`/api/invoices/${this.$route.params.id}`, this.invoice)
                     .then((res) => {
                         this.$router.push({ name: 'home' });
                     });
@@ -192,7 +192,7 @@
             deleteInvoice(){
                 if(confirm("Vuoi elimina fatture?")){
                     this.axios
-                        .delete(`http://localhost:8000/api/invoices/${this.$route.params.id}`)
+                        .delete(`/api/invoices/${this.$route.params.id}`)
                         .then((response) => {
                             this.$router.push({name: 'invoices'});
                         }, (error) => {
