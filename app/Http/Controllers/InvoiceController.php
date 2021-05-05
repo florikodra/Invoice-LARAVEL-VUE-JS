@@ -47,6 +47,7 @@ class InvoiceController extends Controller
         $items = $invoice->items;
         $pdf = PDF::loadView('pdf',compact('invoice','items'));
         return $pdf->stream('invoice.pdf');
+        //return view('pdf',compact('invoice','items'));
 
     }
 

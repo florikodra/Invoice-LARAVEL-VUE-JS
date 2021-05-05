@@ -5,6 +5,8 @@
                 Set the margins of the page to 0, so the footer and the header
                 can be of the full height and width !
              **/
+            @import url(//db.onlinewebfonts.com/c/cb9fcef8c3162a98851f65872ec99f11?family=Museo);
+
             @page {
                 margin: 0cm 0cm;
                 margin-top: 2cm;
@@ -15,10 +17,11 @@
                     display: none!important;
                 }
             }
-            @font-face{
+            /* @font-face{
                 font-family: Verdana!important; 
               
-            }
+            } */
+            @font-face {font-family: "Museo"; src: url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.eot"); src: url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.woff") format("woff"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.svg#Museo") format("svg"); }
             
             /** Define now the real margins of every page in the PDF **/
             body {
@@ -63,11 +66,11 @@
             }
             .companyclient{
                 font-size: 13px;
-                font-family: Helvetica;
+                font-family: 'Museo';
             }
             .title{
                 font-size: 34px;
-                font-family: Helvetica;
+                font-family:  'Museo';
                 opacity: .8;
             }
             .iva-c{
@@ -76,7 +79,7 @@
             }
             .totale-c{
                 font-size: 18px!important;
-                font-family: Helvetica;
+                font-family: "Museo";
                 text-align: center!important;
                 padding: 0!important;
             }
@@ -92,6 +95,7 @@
     <link rel="stylesheet" type="text/css" href="/css/app.css"> --}}
 
     {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css"> --}}
+    <link href="//db.onlinewebfonts.com/c/cb9fcef8c3162a98851f65872ec99f11?family=Museo" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="{{ public_path("/css/bootstrap.css") }}">
 
 </head>
@@ -203,7 +207,18 @@
                     <div class="col-md-5 offset-md-7">
 
                         <table class="table" style="border-top: 2px solid white; padding-top: 0px; margin-top: 0px">
-                            <tr class="text-secondary iva-c" >
+                            <tr  class="text-secondary iva-c" style="line-height:5px;">
+                                <td width="50%">
+                                    Totale Parziale:
+                                </td>
+                                <td>
+                                    {{$invoice->currency}}
+                                </td>
+                                <td>
+                                    {{number_format($invoice->subtotal,2)}}
+                                </td>
+                            </tr>
+                            <tr class="text-secondary iva-c"  style="   line-height:5px;">
                                 <td>
                                     IVA ({{$invoice->tax}}%)
                                 </td>
