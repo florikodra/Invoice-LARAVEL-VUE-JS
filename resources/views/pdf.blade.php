@@ -21,7 +21,22 @@
                 font-family: Verdana!important; 
               
             } */
-            @font-face {font-family: "Museo"; src: url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.eot"); src: url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.woff") format("woff"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.svg#Museo") format("svg"); }
+            /* @font-face {
+                font-family: "Museo";
+                font-weight: normal;
+                font-style: normal; 
+                src: url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.eot"); 
+                src: url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.eot?#iefix") format("embedded-opentype"), 
+                url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.woff2") format("woff2"), 
+                url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.woff") format("woff"), 
+                url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.ttf") format("truetype"), 
+                url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.svg#Museo") format("svg"); 
+                
+                } */
+            @font-face {
+                font-family: Museo;
+                src: url({{storage_path('fonts/Museo300-Regular.otf')}}) format("opentype");
+            }
             
             /** Define now the real margins of every page in the PDF **/
             body {
@@ -70,8 +85,10 @@
             }
             .title{
                 font-size: 34px;
-                font-family:  'Museo';
+                font-family: "Museo";
+                font-weight: normal;
                 opacity: .8;
+                
             }
             .iva-c{
                 font-size: 13px!important;
@@ -79,9 +96,14 @@
             }
             .totale-c{
                 font-size: 18px!important;
-                font-family: "Museo";
+                font-family: "Museo"!important;
                 text-align: center!important;
                 padding: 0!important;
+            }
+            .arrow-down {
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 8px solid #ffffff;
             }
             /* .font-custom{
                 font-family: Helvetica!important;
@@ -95,6 +117,7 @@
     <link rel="stylesheet" type="text/css" href="/css/app.css"> --}}
 
     {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css"> --}}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="//db.onlinewebfonts.com/c/cb9fcef8c3162a98851f65872ec99f11?family=Museo" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="{{ public_path("/css/bootstrap.css") }}">
 
@@ -110,7 +133,7 @@
 
         <main>
             <div class="container" >
-                <div class="row mb-3 mt-5">
+                <div class="row mb-1 mt-5">
                     <div class="col-md-4 text-secondary companyclient"><p>
                         {!! nl2br(e($invoice->company)) !!}
                         </p>
@@ -120,6 +143,27 @@
                     </div>
                 </div>
                 <span class="text-secondary mb-3 font-custom title">Fattura <?php $PAGE_NUM ?></span>
+                <div class="col-md-6" style="z-index: 1; margin-bottom: -1px">
+                        <table>
+                            <thead>
+                                <tr>
+                                <td>
+                                    <div style="border-radius: 100%; border: 2px solid rgb(165, 165, 165);  padding: 6px; margin-left: -10px">
+                                        <img src="{{ public_path("/calendar.png") }}" alt="" width="20px" height="20px" >
+                                    </div>
+                                    <span class="pic arrow-down"></span>
+                                </td>
+                                <td style="padding-left: 69px">
+                                     <div style="border-radius: 100%; border: 2px solid rgb(165, 165, 165);  padding: 6px; margin-left: -10px;">
+                                        <img src="{{ public_path("/barcode.png") }}" alt="" width="20px" height="20px">
+                                    </div>
+                                    <span class="pic arrow-down"></span>
+                                </td>
+                            </tr>
+                            </thead>
+                        </table>
+                </div>
+                
                 <div class="col-md-6 backg-c text-white pt-2 pl-1 pr-2">
                     <div class="col-md-12">
                         <table>

@@ -45,9 +45,16 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::findOrFail($id);
         $items = $invoice->items;
+        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'Museo300-Regular']);
         $pdf = PDF::loadView('pdf',compact('invoice','items'));
+        //$html = view('pdf', compact('invoice', 'items'));
+
+        //$pdf = $pdf->loadHTML($html);
+
         return $pdf->stream('invoice.pdf');
-        //return view('pdf',compact('invoice','items'));
+
+        //return view('pdf', compact('invoice', 'items'));
+
 
     }
 
