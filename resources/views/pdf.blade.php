@@ -5,12 +5,20 @@
                 Set the margins of the page to 0, so the footer and the header
                 can be of the full height and width !
              **/
-            @import url(//db.onlinewebfonts.com/c/cb9fcef8c3162a98851f65872ec99f11?family=Museo);
+             @font-face {
+                font-family: 'Museo';
+                src: url('/css/Museo-300.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
 
             @page {
                 margin: 0cm 0cm;
                 margin-top: 2cm;
                 margin-bottom: 2cm;
+                font-family: 'Museo'; 
+                font-weight: normal; 
+                font-style: normal;
             }
             @page:remaining{
                 .header{
@@ -33,10 +41,12 @@
                 url("//db.onlinewebfonts.com/t/cb9fcef8c3162a98851f65872ec99f11.svg#Museo") format("svg"); 
                 
                 } */
-            @font-face {
+           /*  @font-face {
                 font-family: Museo;
                 src: url({{storage_path('fonts/Museo300-Regular.otf')}}) format("opentype");
-            }
+            } */
+            
+
             
             /** Define now the real margins of every page in the PDF **/
             body {
@@ -44,6 +54,9 @@
                 margin-left: 2cm;
                 margin-right: 2cm;
                 margin-bottom: 2cm;
+                font-family: 'Museo'; 
+                font-weight: normal; 
+                font-style: normal;
             }
 
             /** Define the header rules **/
@@ -105,6 +118,11 @@
                 border-right: 8px solid transparent;
                 border-top: 8px solid #ffffff;
             }
+            table, td, th, tr, span, b {
+                font-family: 'Museo'!important; 
+                font-weight: normal; 
+                font-style: normal;
+            }
             /* .font-custom{
                 font-family: Helvetica!important;
             } */
@@ -118,7 +136,6 @@
 
     {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css"> --}}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="//db.onlinewebfonts.com/c/cb9fcef8c3162a98851f65872ec99f11?family=Museo" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="{{ public_path("/css/bootstrap.css") }}">
 
 </head>
@@ -200,7 +217,7 @@
                         <table class="table table-striped" style="margin-left:-2cm;">
                             <thead class="color-c font-weight-bold" style="border-top: 2px solid white;">
                                 <tr>
-                                    <th scope="col" style="width:50%; padding-left: 2cm">Descrizione</th>
+                                    <th scope="col" style="width:50%; padding-left: 2cm;">Descrizione</th>
                                     <th scope="col" class="text-right">Prezzo</th>
                                     <th scope="col" class="text-center">Quantità</th>
                                     <th scope="col" class="text-right">Totale</th>
@@ -209,7 +226,7 @@
                             <tbody>
                                 @foreach ($items as $item)
                                     <tr style="font-size: 12px; ">
-                                        <td class="text-secondary" style="width:50%; padding-left: 2cm"><b>{{$item->title}}</b><br><small>{{$item->description}}</small></td>
+                                        <td style="width:50%; padding-left: 2cm"><b style="font-family: 'Museo'!important; font-weight: normal; padding-top: 0px">{{$item->title}}</b><br><small class="class="text-secondary" ">{{$item->description}}</small></td>
                                         <td class="text-right text-secondary">
                                             @if(!$item->fixed)
                                             <b class="float-left">{{$invoice->currency}}</b> {{$item->price}}
@@ -252,7 +269,7 @@
 
                         <table class="table" style="border-top: 2px solid white; padding-top: 0px; margin-top: 0px">
                             <tr  class="text-secondary iva-c" style="line-height:5px;">
-                                <td width="50%">
+                                <td width="55%">
                                     Totale Parziale:
                                 </td>
                                 <td>
