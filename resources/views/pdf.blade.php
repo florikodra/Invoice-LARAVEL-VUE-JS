@@ -112,6 +112,7 @@
                 font-family: "Museo"!important;
                 text-align: center!important;
                 padding: 0!important;
+                margin: 0!important;
             }
             .arrow-down {
                 border-left: 8px solid transparent;
@@ -119,6 +120,11 @@
                 border-top: 8px solid #ffffff;
             }
             table, td, th, tr, span, b {
+                padding-top: 0px!important;
+                padding-bottom: 0px!important;
+                margin-top: 0px!important;
+                margin-bottom: 0px!important;
+                margin: 0;
                 font-family: 'Museo'!important; 
                 font-weight: normal; 
                 font-style: normal;
@@ -199,7 +205,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>
+                                    <th style="-webkit-text-stroke: 2px rgb(255, 255, 255);">
                                         {{$invoice->date}}
                                     </th>
                                     <th></th>
@@ -215,12 +221,12 @@
                 <div class="col-lg-12 mt-3 col-sm-12">
                     <div class="table-responsive row">
                         <table class="table table-striped" style="margin-left:-2cm;">
-                            <thead class="color-c font-weight-bold" style="border-top: 2px solid white;">
+                            <thead class="color-c" style="border-top: 2px solid white;">
                                 <tr>
-                                    <th scope="col" style="width:50%; padding-left: 2cm;">Descrizione</th>
-                                    <th scope="col" class="text-right">Prezzo</th>
-                                    <th scope="col" class="text-center">Quantità</th>
-                                    <th scope="col" class="text-right">Totale</th>
+                                    <td scope="col" style="width:50%; padding-left: 2cm;">Descrizione</td>
+                                    <td scope="col" class="text-right">Prezzo</td>
+                                    <td scope="col" class="text-center">Quantità</td>
+                                    <td scope="col" class="text-right">Totale</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -229,7 +235,7 @@
                                         <td style="width:50%; padding-left: 2cm"><b style="font-family: 'Museo'!important; font-weight: normal; padding-top: 0px">{{$item->title}}</b><br><small class="class="text-secondary" ">{{$item->description}}</small></td>
                                         <td class="text-right text-secondary">
                                             @if(!$item->fixed)
-                                            <b class="float-left">{{$invoice->currency}}</b> {{$item->price}}
+                                            <b class="float-left">{{$invoice->currency}}</b> {{number_format($item->price,2,',', ' ')}}
                                             @endif
                                         </td>
                                         <td class="text-center text-secondary">
@@ -239,7 +245,7 @@
                                             {{$item->quantity}}
                                         @endif
                                         </td>
-                                        <td class="text-right text-secondary"><b class="float-left">{{$invoice->currency}}</b> {{$item->total}}</td>
+                                        <td class="text-right text-secondary"><b class="float-left">{{$invoice->currency}}</b> {{number_format($item->total,2,',', ' ')}}</td>
                                     </tr>
                                 @endforeach
                                
@@ -265,40 +271,39 @@
                 </div> --}}
 
                 <div class="row" >
-                    <div class="col-md-5 offset-md-7">
-
+                    <div class="col-md-6 offset-md-6">
                         <table class="table" style="border-top: 2px solid white; padding-top: 0px; margin-top: 0px">
                             <tr  class="text-secondary iva-c" style="line-height:5px;">
-                                <td width="55%">
+                                <td width="95px" class="text-left">
                                     Totale Parziale:
                                 </td>
-                                <td>
+                                <td width="30px">
                                     {{$invoice->currency}}
                                 </td>
-                                <td>
-                                    {{number_format($invoice->subtotal,2)}}
+                                <td width="100px">
+                                    {{number_format($invoice->subtotal,2,',', ' ')}}
                                 </td>
                             </tr>
-                            <tr class="text-secondary iva-c"  style="   line-height:5px;">
-                                <td>
+                            <tr class="text-secondary iva-c"  style="line-height:5px;">
+                                <td class="text-left">
                                     IVA ({{$invoice->tax}}%)
                                 </td>
                                 <td>
                                     {{$invoice->currency}}
                                 </td>
                                 <td>
-                                    {{number_format($invoice->total-$invoice->subtotal,2)}}
+                                    {{number_format($invoice->total-$invoice->subtotal,2,',', ' ')}}
                                 </td>
                             </tr>
-                            <tr class="backg-c text-white totale-c">
-                                <th>
+                            <tr class="backg-c text-white totale-c" style="line-height: 13px" >
+                                <th class="text-left">
                                     Totale
                                 </th>
                                 <th>
                                     {{$invoice->currency}}
                                 </th>
-                                <th>
-                                    {{$invoice->total}}
+                                <th class="text-right">
+                                    {{number_format($invoice->total,2,',', ' ')}}
                                 </th>
                             </tr>
                         </table>
@@ -309,17 +314,17 @@
                 <div class="row">
                     <table class="col-md-12" height="100%">
                         <tr>
-                            <td class="companyclient text-secondary" style="width: 61%">
-                                <span><b>Coordinate bancarie</b><br>
-                                    Street 2<br>
+                            <td class="companyclient" style="width: 54%">
+                                <span style="color:#202020">Coordinate bancarie</span><br>
+                                   <span class="text-secondary"> Street 2<br>
                                     IBAN: USFD4543345g2222<br>
                                     CORPORATE<br>
                                     Bank - Street - New York<br>
                                     55558 New York
                                    </span>
                             </td>
-                            <td class="companyclient text-secondary font-weight-bold align-top">
-                                <span>Grazie per la vostra fiducia e cordiali saluti.CORPORATE</span>
+                            <td class="companyclient align-top">
+                                <span style="color:#202020">Grazie per la vostra fiducia e cordiali saluti. CORPORATE</span>
                             </td>
                         </tr>
                         <tr>
